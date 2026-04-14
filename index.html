@@ -1138,8 +1138,7 @@ function averagePeriod(weeks,scoredWeeks){
   avg.sort((a,b)=>b.score-a.score);avg.forEach((s,i)=>s.rank=i+1);return avg;
 }
 
-function getWeekLabels(c){return Object.keys(state[c].weeklyData).sort();}
-function setMode(c,m){
+function getWeekLabels(c){return Object.keys(state[c].weeklyData).sort((a,b)=>{const na=getWeekNum(a),nb=getWeekNum(b);return na-nb;});}function setMode(c,m){
   state[c].mode=m;
   document.getElementById('mode-single-'+c).classList.toggle('active',m==='single');
   document.getElementById('mode-period-'+c).classList.toggle('active',m==='period');
