@@ -267,9 +267,45 @@
   .month-btn{font-family:'DM Mono',monospace;font-size:9px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:0.3px;}
   .month-btn:hover{border-color:var(--yellow);color:var(--yellow);}
   .month-btn.active{border-color:var(--yellow);background:var(--yellow-glow);color:var(--yellow);}
+
+  /* ── LOGIN SCREEN ─────────────────────────────────────────── */
+  #app-wrapper{display:none;}
+  #app-wrapper.visible{display:contents;}
+  #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:2000;}
+  #login-screen.hidden{display:none;}
+  .login-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:44px 48px;width:380px;max-width:94vw;}
+  .login-logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:5px;}
+  .login-tagline{font-size:11px;color:var(--muted);margin-bottom:36px;line-height:1.5;}
+  .login-label{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-family:'DM Mono',monospace;}
+  .login-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:11px 13px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:18px;box-sizing:border-box;}
+  .login-input:focus{border-color:var(--yellow);}
+  .login-input.err{border-color:var(--red);}
+  .login-btn{width:100%;background:var(--yellow);color:#000;font-weight:700;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.8px;text-transform:uppercase;padding:12px;border:none;border-radius:6px;cursor:pointer;transition:opacity .2s;margin-top:4px;}
+  .login-btn:hover{opacity:.85;}
+  .login-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .login-err{font-size:11px;color:var(--red);margin-top:12px;display:none;text-align:center;font-family:'DM Mono',monospace;line-height:1.5;}
+  .login-err.show{display:block;}
+  .login-user-pill{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;}
+  .login-signout{font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;letter-spacing:.3px;transition:all .2s;}
+  .login-signout:hover{border-color:var(--red);color:var(--red);}
+
 </style>
 </head>
 <body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🛒 SEA FF Hub</div>
+    <div class="login-tagline">Fulfillment Performance Dashboard<br>Sign in to continue</div>
+    <label class="login-label" for="login-email">Email</label>
+    <input class="login-input" type="email" id="login-email" placeholder="you@jdsports.com" autocomplete="email" />
+    <label class="login-label" for="login-pw">Password</label>
+    <input class="login-input" type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password" />
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
 
 <header>
   <div class="header-left">
@@ -1815,7 +1851,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ['health','movers','alerts','overall'].forEach(t=>{const el=document.getElementById('tab-'+t+s);if(el)el.style.display='none';});
   });
   document.addEventListener('mouseup',()=>{COUNTRIES.forEach(c=>{if(state[c].isDragging)chipDragEnd(c);});});
-  syncAllCountries();
+  // syncAllCountries() — now called after auth in _showApp()
 
 // ── C&C upload listeners ──────────────────────────────────────────────────────
 COUNTRIES.forEach(c=>{
@@ -1959,8 +1995,7 @@ function cncHandleSliderClick(c, id) {
   }
 }
 
-// Sync all C&C countries
-cncSyncAll();
+// cncSyncAll() — now called after auth in _showApp()
 
 });
 
@@ -2157,7 +2192,7 @@ function cncGetTier(c, score) {
   if (score >= t.a) return 'A'; if (score >= t.b) return 'B'; if (score >= t.c) return 'C'; return 'D';
 }
 
-function cncGetWeekLabels(c) { return Object.keys(cncState[c].weeklyData).sort(); }
+function cncGetWeekLabels(c) { return Object.keys(cncState[c].weeklyData).sort((a,b)=>{const na=getWeekNum(a),nb=getWeekNum(b);return na-nb;}); }
 
 function cncAveragePeriod(weeks, sw) {
   const sm = {};
@@ -3090,6 +3125,67 @@ cncSelectQuarter = function(c, quarter) {
   _origCncSelectQuarter(c, quarter);
 };
 
+
+
+
+// ── SUPABASE AUTH ──────────────────────────────────────────────────────────
+(async function initAuth() {
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  window._supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { data: { session } } = await window._supa.auth.getSession();
+  if (session) {
+    _showApp(session.user);
+  }
+  window._supa.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT') location.reload();
+  });
+  ['login-email', 'login-pw'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  });
+})();
+
+async function doLogin() {
+  const email = (document.getElementById('login-email').value || '').trim();
+  const pw = document.getElementById('login-pw').value;
+  const btn = document.getElementById('login-btn');
+  const errEl = document.getElementById('login-err');
+  if (!email || !pw) { errEl.textContent = 'Please enter your email and password.'; errEl.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Signing in…'; errEl.classList.remove('show');
+  document.querySelectorAll('.login-input').forEach(i => i.classList.remove('err'));
+  const { data, error } = await window._supa.auth.signInWithPassword({ email, password: pw });
+  if (error) {
+    errEl.textContent = error.message; errEl.classList.add('show');
+    document.querySelectorAll('.login-input').forEach(i => i.classList.add('err'));
+    btn.disabled = false; btn.textContent = 'Sign in'; return;
+  }
+  _showApp(data.user);
+}
+
+function _showApp(user) {
+  document.getElementById('login-screen').classList.add('hidden');
+  // Add user pill to header
+  const hr = document.querySelector('.header-right');
+  if (hr) {
+    const p = document.createElement('div');
+    p.className = 'login-user-pill';
+    p.innerHTML = '<span>' + user.email + '</span><button class="login-signout" onclick="doSignOut()">Sign out</button>';
+    hr.prepend(p);
+  }
+  // Now kick off data sync
+  syncAllCountries();
+  cncSyncAll();
+}
+
+async function doSignOut() {
+  if (window._supa) await window._supa.auth.signOut();
+}
 
 </script>
 </body>
