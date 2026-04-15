@@ -3217,6 +3217,8 @@ cncSelectQuarter = function(c, quarter) {
 
 // ── SUPABASE AUTH ──────────────────────────────────────────────────────────
 (async function initAuth() {
+  const _loginBtn = document.getElementById('login-btn');
+  if (_loginBtn) { _loginBtn.disabled = true; _loginBtn.textContent = 'Connecting…'; }
   await new Promise((res, rej) => {
     const s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
@@ -3224,6 +3226,7 @@ cncSelectQuarter = function(c, quarter) {
     document.head.appendChild(s);
   });
   window._supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  if (_loginBtn) { _loginBtn.disabled = false; _loginBtn.textContent = 'Sign in'; }
   const { data: { session } } = await window._supa.auth.getSession();
   if (session) {
     _showApp(session.user);
@@ -3241,6 +3244,13 @@ cncSelectQuarter = function(c, quarter) {
       if (e.key === 'Enter') doLogin();
     });
   });
+} catch(e) {
+  const errEl = document.getElementById('login-err');
+  const btn = document.getElementById('login-btn');
+  if (errEl) { errEl.textContent = 'Failed to connect. Please refresh the page.'; errEl.classList.add('show'); }
+  if (btn) { btn.disabled = true; btn.textContent = 'Connection failed'; }
+  console.error('initAuth failed:', e);
+}
 })();
 
 async function doLogin() {
@@ -3249,9 +3259,16 @@ async function doLogin() {
   const btn = document.getElementById('login-btn');
   const errEl = document.getElementById('login-err');
   if (!email || !pw) { errEl.textContent = 'Please enter your email and password.'; errEl.classList.add('show'); return; }
+  if (!window._supa) { errEl.textContent = 'Still connecting, please try again in a moment.'; errEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Signing in…'; errEl.classList.remove('show');
   document.querySelectorAll('.login-input').forEach(i => i.classList.remove('err'));
-  const { data, error } = await window._supa.auth.signInWithPassword({ email, password: pw });
+  let data, error;
+  try {
+    ({ data, error } = await window._supa.auth.signInWithPassword({ email, password: pw }));
+  } catch(e) {
+    errEl.textContent = 'Connection error: ' + e.message; errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Sign in'; return;
+  }
   if (error) {
     errEl.textContent = error.message; errEl.classList.add('show');
     document.querySelectorAll('.login-input').forEach(i => i.classList.add('err'));
