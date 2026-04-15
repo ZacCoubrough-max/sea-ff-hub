@@ -74,7 +74,7 @@
 
   /* ── Weeks strip ────────────────────────────────────────── */
   .weeks-area{margin-bottom:20px;}
-  .weeks-strip-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin-bottom:8px;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .weeks-strip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
   .weeks-strip-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
   .week-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s;user-select:none;}
   .week-chip:hover{border-color:var(--yellow);color:var(--yellow);}
@@ -184,27 +184,27 @@
   /* ── Drawer ───────────────────────────────────────────────── */
   .drawer-overlay{position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:200;display:none;backdrop-filter:blur(4px);}
   .drawer-overlay.open{display:block;}
-  .drawer{position:fixed;right:0;top:0;height:100%;width:420px;background:var(--surface);border-left:1px solid var(--border);z-index:300;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+  .drawer{position:fixed;right:0;top:0;height:100%;width:min(820px,90vw);background:var(--surface);border-left:1px solid var(--border);z-index:300;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
   .drawer.open{transform:translateX(0);}
-  .drawer-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 24px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1;}
-  .drawer-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;text-transform:uppercase;color:var(--yellow);letter-spacing:0.5px;}
+  .drawer-header{display:flex;justify-content:space-between;align-items:flex-start;padding:28px 36px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1;}
+  .drawer-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--yellow);letter-spacing:0.5px;}
   .drawer-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;}
   .drawer-close{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:14px;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
   .drawer-close:hover{border-color:var(--red);color:var(--red);}
-  #drawer-body{padding:20px 24px;}
-  .drawer-section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin:18px 0 10px;font-family:'DM Mono',monospace;}
-  .kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px;}
-  .kpi-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;transition:border-color .2s;}
+  #drawer-body{padding:28px 36px;}
+  .drawer-section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin:24px 0 12px;font-family:'DM Mono',monospace;}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:8px;}
+  .kpi-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color .2s;}
   .kpi-card:hover{border-color:var(--yellow);}
-  .kpi-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-  .kpi-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.5px;}
-  .kpi-delta{font-size:10px;margin-top:2px;}
-  .chart-wrap{height:160px;margin:8px 0;}
+  .kpi-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .kpi-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px;}
+  .kpi-delta{font-size:13px;margin-top:4px;}
+  .chart-wrap{height:240px;margin:12px 0;}
   .note-area{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border-color .2s;}
   .note-area:focus{border-color:var(--yellow);}
   .note-saved{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);margin-top:4px;display:none;}
-  .week-history-table th{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:7px 8px;background:var(--bg);border-bottom:1px solid var(--border);}
-  .week-history-table td{font-size:11px;padding:7px 8px;border-bottom:1px solid rgba(42,42,42,.4);}
+  .week-history-table th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:10px 12px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .week-history-table td{font-size:13px;padding:10px 12px;border-bottom:1px solid rgba(42,42,42,.4);}
   .week-history-table tr.in-a td{background:rgba(255,230,0,.04);}
   .week-history-table tr.in-b td{background:rgba(100,100,100,.04);}
 
@@ -233,7 +233,7 @@
   .col-popover-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--yellow);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;}
   .col-popover-text{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);line-height:1.6;}
 
-  .quarter-bar{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+  .quarter-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
   .quarter-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0;margin-right:2px;}
   .quarter-btn{font-family:'DM Mono',monospace;font-size:10px;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:0.5px;}
   .quarter-btn:hover{border-color:var(--yellow);color:var(--yellow);}
@@ -289,6 +289,14 @@
   .login-signout{font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;letter-spacing:.3px;transition:all .2s;}
   .login-signout:hover{border-color:var(--red);color:var(--red);}
 
+
+  .store-filter-select{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;cursor:pointer;transition:border-color .2s;max-width:180px;}
+  .store-filter-select:focus,.store-filter-select:hover{border-color:var(--yellow);}
+  .store-filter-select option{background:var(--surface2);color:var(--text);}
+
+  .filter-select{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);outline:none;cursor:pointer;transition:border-color .2s,color .2s;letter-spacing:0.5px;appearance:none;-webkit-appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+  .filter-select:focus,.filter-select:hover{border-color:var(--yellow);color:var(--yellow);}
+  .filter-select option{background:var(--surface2);color:var(--text);}
 </style>
 </head>
 <body>
@@ -358,8 +366,8 @@
         <div class="week-count-badge" id="week-count-badge-MY" style="margin-left:auto">SFS MY &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('MY','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('MY','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('MY','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('MY','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('MY','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('MY','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('MY','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('MY','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('MY','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="quarter-sel-MY" onchange="sfsSelectQuarter('MY',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="month-sel-MY" onchange="sfsSelectMonth('MY',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-MY"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-MY"></div>
@@ -521,8 +529,8 @@
         <div class="week-count-badge" id="week-count-badge-SG" style="margin-left:auto">SFS SG &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('SG','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('SG','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('SG','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('SG','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('SG','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('SG','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('SG','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('SG','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('SG','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="quarter-sel-SG" onchange="sfsSelectQuarter('SG',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="month-sel-SG" onchange="sfsSelectMonth('SG',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-SG"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-SG"></div>
@@ -684,8 +692,8 @@
         <div class="week-count-badge" id="week-count-badge-TH" style="margin-left:auto">SFS TH &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('TH','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('TH','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('TH','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('TH','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('TH','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('TH','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('TH','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('TH','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('TH','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="quarter-sel-TH" onchange="sfsSelectQuarter('TH',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="month-sel-TH" onchange="sfsSelectMonth('TH',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-TH"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-TH"></div>
@@ -953,7 +961,7 @@ const CONFIG_PASSWORD='JDsportsSEA!';
 
 const state={};
 COUNTRIES.forEach(c=>{
-  state[c]={weeklyData:{},notes:{},rootCauses:{},configs:[],mode:'single',selectedWeeks:[],dragStart:null,isDragging:false,activeTab:'stores',sortCol:'score',sortDir:-1,searchTerm:'',drawerChart:null};
+  state[c]={weeklyData:{},notes:{},rootCauses:{},configs:[],mode:'single',selectedWeeks:[],dragStart:null,isDragging:false,activeTab:'stores',sortCol:'score',sortDir:-1,searchTerm:'',storeFilter:'',drawerChart:null};
 });
 
 let activeCountry='MY',openDrawerId=null,openDrawerCountry=null;
@@ -1368,16 +1376,58 @@ function renderSparkline(c,id,sw){
 
 function renderWeeksStrip(c){
   const weeks=getWeekLabels(c),strip=document.getElementById('weeks-strip-'+c),badge=document.getElementById('week-count-badge-'+c);
-  if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' \u2014 0 WEEKS';return;}
-  badge.textContent=c+' \u2014 '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
-  const pp=state[c].mode==='period'?getPriorPeriod(c,state[c].selectedWeeks):[];
-  let html='<span class="weeks-strip-label">Weeks:</span>';
-  weeks.forEach(w=>{const inA=state[c].selectedWeeks.includes(w),inB=pp.includes(w),cls=inA?'in-period-a':inB?'in-period-b':'';html+='<div class="week-chip '+cls+'" data-week="'+w.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" data-country="'+c+'" data-action="chip"><span class="chip-lbl" style="pointer-events:none">'+w+'</span><span class="del" data-action="del" style="cursor:pointer;padding:0 2px;color:var(--muted)">\u2715</span></div>';});
-  strip.innerHTML=html;
+  if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' — 0 WEEKS';return;}
+  badge.textContent=c+' — '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
+  const isSingle=state[c].mode==='single';
+  const curA=state[c].selectedWeeks.length?state[c].selectedWeeks[state[c].selectedWeeks.length-1]:'';
+  const curFrom=state[c].selectedWeeks.length?state[c].selectedWeeks[0]:'';
+  const curTo=state[c].selectedWeeks.length?state[c].selectedWeeks[state[c].selectedWeeks.length-1]:'';
+  const opts=weeks.map(w=>'<option value="'+w+'" '+(w===curA?'selected':'')+'>'+w+'</option>').join('');
+  const optsFrom=weeks.map(w=>'<option value="'+w+'" '+(w===curFrom?'selected':'')+'>'+w+'</option>').join('');
+  const optsTo=weeks.map(w=>'<option value="'+w+'" '+(w===curTo?'selected':'')+'>'+w+'</option>').join('');
+  let h='<span class="weeks-strip-label">Weeks:</span>';
+  if(isSingle){
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectSingleWeek(''+c+'',this.value)">'+opts+'</select>';
+  } else {
+    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">From:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodFrom(''+c+'',this.value)">'+optsFrom+'</select>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">To:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodTo(''+c+'',this.value)">'+optsTo+'</select>';
+  }
+  strip.innerHTML=h;
   const hint=document.getElementById('period-hint-'+c);
   if(state[c].mode==='single'){hint.innerHTML='';}
-  else{const pp2=getPriorPeriod(c,state[c].selectedWeeks),aL=state[c].selectedWeeks.length===1?state[c].selectedWeeks[0]:state[c].selectedWeeks[0]+' \u2192 '+state[c].selectedWeeks[state[c].selectedWeeks.length-1],bL=pp2.length?(pp2[0]+(pp2.length>1?' \u2192 '+pp2[pp2.length-1]:'')):'(no prior period)';hint.innerHTML='<span>Current: <strong style="color:var(--text)">'+aL+'</strong></span>&nbsp;&nbsp;<span>Prior: <strong style="color:var(--text)">'+bL+'</strong></span>';}
+  else{
+    const pp2=getPriorPeriod(c,state[c].selectedWeeks),
+      aL=state[c].selectedWeeks.length===1?state[c].selectedWeeks[0]:state[c].selectedWeeks[0]+' → '+state[c].selectedWeeks[state[c].selectedWeeks.length-1],
+      bL=pp2.length?(pp2[0]+(pp2.length>1?' → '+pp2[pp2.length-1]:'')):'(no prior period)';
+    hint.innerHTML='<span>Period A: <strong style="color:var(--yellow)">'+aL+'</strong></span>&nbsp;&nbsp;<span>Prior: <strong style="color:var(--text)">'+bL+'</strong></span>';
+  }
 }
+
+function sfsSelectSingleWeek(c,w){
+  state[c].selectedWeeks=[w];
+  renderAll(c);
+}
+
+function sfsSelectPeriodFrom(c,fromW){
+  const weeks=getWeekLabels(c);
+  const toW=state[c].selectedWeeks.length?state[c].selectedWeeks[state[c].selectedWeeks.length-1]:weeks[weeks.length-1];
+  const fi=weeks.indexOf(fromW),ti=weeks.indexOf(toW);
+  if(fi<0||ti<0){state[c].selectedWeeks=[fromW];renderAll(c);return;}
+  state[c].selectedWeeks=fi<=ti?weeks.slice(fi,ti+1):weeks.slice(ti,fi+1);
+  renderAll(c);
+}
+
+function sfsSelectPeriodTo(c,toW){
+  const weeks=getWeekLabels(c);
+  const fromW=state[c].selectedWeeks.length?state[c].selectedWeeks[0]:weeks[0];
+  const fi=weeks.indexOf(fromW),ti=weeks.indexOf(toW);
+  if(fi<0||ti<0){state[c].selectedWeeks=[toW];renderAll(c);return;}
+  state[c].selectedWeeks=fi<=ti?weeks.slice(fi,ti+1):weeks.slice(ti,fi+1);
+  renderAll(c);
+}
+
 
 function renderTable(c){
   const s=sfx(c),sw=rescoreAll(c);
@@ -1393,7 +1443,7 @@ function renderTable(c){
     banner='Showing <strong>'+w+'</strong>'+(prev?(' vs <strong>'+all[idx-1]+'</strong>'):'');
   }
   const swd=curr.map(st=>{const p=prev?prev.find(x=>x.id===st.id):null;return{...st,prev:p,score_delta:p?st.score-p.score:-999,claimed_delta:p?st.claimed_pct-p.claimed_pct:null,speed_delta:p?-(st.speed_ratio-p.speed_ratio):null,ttc_delta:p?st.ttc-p.ttc:null,cpd_delta:p?st.cpd-p.cpd:null};});
-  let filtered=swd.filter(st=>!state[c].searchTerm||st.name.toLowerCase().includes(state[c].searchTerm.toLowerCase())||st.id.toLowerCase().includes(state[c].searchTerm.toLowerCase()));
+  let filtered=swd.filter(st=>{const mS=!state[c].searchTerm||st.name.toLowerCase().includes(state[c].searchTerm.toLowerCase())||st.id.toLowerCase().includes(state[c].searchTerm.toLowerCase());const mF=!state[c].storeFilter||st.id===state[c].storeFilter;return mS&&mF;});
   filtered=[...filtered].sort((a,b)=>{let av=a[state[c].sortCol]!==undefined?a[state[c].sortCol]:0,bv=b[state[c].sortCol]!==undefined?b[state[c].sortCol]:0;return state[c].sortDir*(av>bv?1:av<bv?-1:0);});
   const avgScore=curr.reduce((a,st)=>a+st.score,0)/curr.length||0;
   const avgClaimed=curr.reduce((a,st)=>a+st.claimed_pct,0)/curr.length||0;
@@ -1423,7 +1473,7 @@ function renderTable(c){
   }).join('');
   const mc=document.getElementById('main-content'+s);
   if(mc)mc.innerHTML='<div class="main-panel"><div class="period-banner">'+banner+'</div>'
-    +'<div class="toolbar"><input type="text" class="store-search" placeholder="Search store..." value="'+state[c].searchTerm+'" oninput="state[\''+c+'\'].searchTerm=this.value;renderTable(\''+c+'\')" ></div>'
+    +'<div class="toolbar"><select class="store-filter-select" id="store-filter'+s+'" onchange="filterByStore(\''+c+'\',this.value)"><option value="">All stores</option></select> <input type="text" class="store-search" placeholder="Search store..." value="'+state[c].searchTerm+'" oninput="state[\''+c+'\'].searchTerm=this.value;renderTable(\''+c+'\')" ></div>'
     +'<div style="overflow-x:auto"><table><thead><tr>'
     +'<th onclick="doSort(\''+c+'\',\'rank\')">Rank '+sa('rank')+'</th>'
     +'<th onclick="doSort(\''+c+'\',\'name\')">Store '+sa('name')+'</th>'
@@ -2023,7 +2073,7 @@ COUNTRIES.forEach(c => {
   cncState[c] = {
     weeklyData: {}, notes: {}, rootCauses: {}, configs: [],
     mode: 'single', selectedWeeks: [], dragStart: null, isDragging: false,
-    activeTab: 'stores', sortCol: 'score', sortDir: -1, searchTerm: ''
+    activeTab: 'stores', sortCol: 'score', sortDir: -1, searchTerm: '', storeFilter: ''
   };
 });
 
@@ -2058,6 +2108,7 @@ async function cncSyncCountry(c) {
     cncState[c].selectedWeeks = cncState[c].selectedWeeks.filter(w => cncState[c].weeklyData[w]);
     if (!cncState[c].selectedWeeks.length && wks.length) cncState[c].selectedWeeks = [wks[wks.length - 1]];
     cncRenderAll(c);
+    cncPopulateStoreDropdown(c);
   } catch(e) {
     const mc = document.getElementById('cnc-main-content' + sfx(c));
     if (mc) mc.innerHTML = '<div class="empty-state"><h2>Could not connect</h2><p>' + e.message + '</p></div>';
@@ -2291,7 +2342,7 @@ function cncRenderTable(c) {
     const p = prev ? prev.find(x => x.id === st.id) : null;
     return Object.assign({}, st, { prev: p, ttb_delta: p ? st.ttb - p.ttb : null, bag_delta: p ? st.pct_bagged - p.pct_bagged : null });
   });
-  let filtered = swd.filter(st => !cncState[c].searchTerm || st.name.toLowerCase().includes(cncState[c].searchTerm.toLowerCase()));
+  let filtered = swd.filter(st => { const mS = !cncState[c].searchTerm || st.name.toLowerCase().includes(cncState[c].searchTerm.toLowerCase()); const mF = !cncState[c].storeFilter || st.id === cncState[c].storeFilter; return mS && mF; });
   filtered = [...filtered].sort((a, b) => { let av = a[cncState[c].sortCol] !== undefined ? a[cncState[c].sortCol] : 0, bv = b[cncState[c].sortCol] !== undefined ? b[cncState[c].sortCol] : 0; return cncState[c].sortDir * (av > bv ? 1 : av < bv ? -1 : 0); });
   const totalMissed = curr.reduce((a, s) => a + (s.missed_rev || 0), 0);
   const avgTtb = curr.reduce((a, s) => a + s.ttb, 0) / curr.length || 0;
@@ -2327,7 +2378,7 @@ function cncRenderTable(c) {
   const mc = document.getElementById('cnc-main-content' + s);
   if (mc) mc.innerHTML = '<div class="main-panel">'
     + '<div class="period-banner">' + banner + (totalMissed > 0 ? ' &nbsp;&nbsp; <span style="color:var(--red);font-weight:600">' + currency + ' ' + totalMissed.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' missed revenue this week</span>' : '') + '</div>'
-    + '<div class="toolbar"><input type="text" class="store-search" placeholder="Search store..." value="' + cncState[c].searchTerm + '" oninput="cncState[\'' + c + '\'].searchTerm=this.value;cncRenderTable(\'' + c + '\')" ></div>'
+    + '<div class="toolbar"><select class="store-filter-select" id="cnc-store-filter'+s+'" onchange="cncFilterByStore(\''+c+'\',this.value)"><option value="">All stores</option></select> <input type="text" class="store-search" placeholder="Search store..." value="' + cncState[c].searchTerm + '" oninput="cncState[\'' + c + '\'].searchTerm=this.value;cncRenderTable(\'' + c + '\')" ></div>'
     + '<div style="overflow-x:auto"><table><thead><tr>'
     + '<th onclick="cncDoSort(\'' + c + '\',\'rank\')">Rank ' + sa('rank') + '</th>'
     + '<th onclick="cncDoSort(\'' + c + '\',\'name\')">Store ' + sa('name') + '</th>'
@@ -2809,6 +2860,9 @@ function sfsSelectQuarter(c, quarter) {
     btn.classList.toggle('active', btn.textContent.trim() === quarter);
   });
   renderAll(c);
+
+  const qSel = document.getElementById('quarter-sel-' + c);
+  if (qSel) qSel.value = quarter || '';
 }
 
 function cncSelectQuarter(c, quarter) {
@@ -3083,6 +3137,9 @@ function sfsSelectMonth(c, month) {
     btn.classList.toggle('active', btn.textContent.trim() === month);
   });
   renderAll(c);
+
+  const mSel = document.getElementById('month-sel-' + c);
+  if (mSel) mSel.value = month || '';
 }
 
 function cncSelectMonth(c, month) {
@@ -3256,6 +3313,64 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
   }
 });
+
+
+// ── STORE FILTER DROPDOWN ─────────────────────────────────────────────
+function populateStoreDropdown(c) {
+  const s = sfx(c);
+  const sel = document.getElementById('store-filter' + s);
+  if (!sel) return;
+  const weeks = getWeekLabels(c);
+  if (!weeks.length) return;
+  const stores = {};
+  weeks.forEach(w => {
+    (state[c].weeklyData[w] || []).forEach(st => {
+      stores[st.id] = st.name || st.id;
+    });
+  });
+  const current = state[c].storeFilter;
+  sel.innerHTML = '<option value="">All stores</option>';
+  Object.entries(stores).sort((a,b) => a[1].localeCompare(b[1])).forEach(([id, name]) => {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = name;
+    if (id === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function filterByStore(c, val) {
+  state[c].storeFilter = val;
+  renderTable(c);
+}
+
+function cncPopulateStoreDropdown(c) {
+  const s = sfx(c);
+  const sel = document.getElementById('cnc-store-filter' + s);
+  if (!sel) return;
+  const weeks = cncGetWeekLabels(c);
+  if (!weeks.length) return;
+  const stores = {};
+  weeks.forEach(w => {
+    (cncState[c].weeklyData[w] || []).forEach(st => {
+      stores[st.id] = st.name || st.id;
+    });
+  });
+  const current = cncState[c].storeFilter;
+  sel.innerHTML = '<option value="">All stores</option>';
+  Object.entries(stores).sort((a,b) => a[1].localeCompare(b[1])).forEach(([id, name]) => {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = name;
+    if (id === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function cncFilterByStore(c, val) {
+  cncState[c].storeFilter = val;
+  cncRenderTable(c);
+}
 
 </script>
 </body>
