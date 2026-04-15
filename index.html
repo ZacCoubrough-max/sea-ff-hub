@@ -311,19 +311,12 @@
         <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;">Malaysia &middot; Singapore &middot; Thailand</div>
       </div>
     </div>
-    <div id="magic-step-1">
-      <label class="login-label" for="login-email">Work Email</label>
-      <input class="login-input" type="email" id="login-email" placeholder="you@jdsports.com" autocomplete="email" onkeydown="if(event.key==='Enter')sendMagicLink()" />
-      <button class="login-btn" id="login-btn" onclick="sendMagicLink()">Send Login Link</button>
-      <div class="login-err" id="login-err"></div>
-    </div>
-    <div id="magic-step-2" style="display:none;text-align:center;padding:8px 0 4px">
-      <div style="font-size:36px;margin-bottom:12px">&#x1F4EC;</div>
-      <div style="font-size:13px;color:var(--text);font-weight:600;margin-bottom:6px">Check your inbox</div>
-      <div id="magic-sent-email" style="font-size:11px;color:var(--muted);margin-bottom:16px"></div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:20px">Click the link in your email to sign in.<br>The link expires in 1 hour.</div>
-      <button class="btn" style="font-size:11px;width:100%" onclick="resetMagicForm()">Use a different email</button>
-    </div>
+    <label class="login-label" for="login-email">Email</label>
+    <input class="login-input" type="email" id="login-email" placeholder="you@jdsports.com" autocomplete="email" />
+    <label class="login-label" for="login-pw">Password</label>
+    <input class="login-input" type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password" />
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="login-err"></div>
 
   </div>
 </div>
@@ -3228,36 +3221,26 @@ cncSelectQuarter = function(c, quarter) {
   });
 })();
 
-async function sendMagicLink() {
+async function doLogin() {
   const email = (document.getElementById('login-email').value || '').trim();
+  const pw = document.getElementById('login-pw').value;
   const btn = document.getElementById('login-btn');
   const errEl = document.getElementById('login-err');
-  if (!email) { errEl.textContent = 'Please enter your work email.'; errEl.classList.add('show'); return; }
   const allowedDomains = ['@jdplc.com', '@jdsf.com.au'];
   if (!allowedDomains.some(d => email.endsWith(d))) {
     errEl.textContent = 'Access restricted to JD Sports email addresses.';
     errEl.classList.add('show'); return;
   }
-  btn.disabled = true; btn.textContent = 'Sending…'; errEl.classList.remove('show');
-  const { error } = await window._supa.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.href }
-  });
+  if (!email || !pw) { errEl.textContent = 'Please enter your email and password.'; errEl.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Signing in…'; errEl.classList.remove('show');
+  document.querySelectorAll('.login-input').forEach(i => i.classList.remove('err'));
+  const { data, error } = await window._supa.auth.signInWithPassword({ email, password: pw });
   if (error) {
     errEl.textContent = error.message; errEl.classList.add('show');
-    btn.disabled = false; btn.textContent = 'Send Login Link'; return;
+    document.querySelectorAll('.login-input').forEach(i => i.classList.add('err'));
+    btn.disabled = false; btn.textContent = 'Sign in'; return;
   }
-  document.getElementById('magic-step-1').style.display = 'none';
-  document.getElementById('magic-step-2').style.display = 'block';
-  document.getElementById('magic-sent-email').textContent = email;
-}
-
-function resetMagicForm() {
-  document.getElementById('magic-step-1').style.display = 'block';
-  document.getElementById('magic-step-2').style.display = 'none';
-  document.getElementById('login-email').value = '';
-  const btn = document.getElementById('login-btn');
-  btn.disabled = false; btn.textContent = 'Send Login Link';
+  _showApp(data.user);
 }
 
 function _showApp(user) {
