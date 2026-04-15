@@ -3233,6 +3233,11 @@ async function sendMagicLink() {
   const btn = document.getElementById('login-btn');
   const errEl = document.getElementById('login-err');
   if (!email) { errEl.textContent = 'Please enter your work email.'; errEl.classList.add('show'); return; }
+  const allowedDomains = ['@jdplc.com', '@jdsf.com.au'];
+  if (!allowedDomains.some(d => email.endsWith(d))) {
+    errEl.textContent = 'Access restricted to JD Sports email addresses.';
+    errEl.classList.add('show'); return;
+  }
   btn.disabled = true; btn.textContent = 'Sending…'; errEl.classList.remove('show');
   const { error } = await window._supa.auth.signInWithOtp({
     email,
