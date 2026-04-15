@@ -1387,12 +1387,12 @@ function renderWeeksStrip(c){
   const optsTo=weeks.map(w=>'<option value="'+w+'" '+(w===curTo?'selected':'')+'>'+w+'</option>').join('');
   let h='<span class="weeks-strip-label">Weeks:</span>';
   if(isSingle){
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectSingleWeek(''+c+'',this.value)">'+opts+'</select>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectSingleWeek(\'' + c + '\',this.value)">'+opts+'</select>';
   } else {
-    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">From:</span>';
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodFrom(''+c+'',this.value)">'+optsFrom+'</select>';
-    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">To:</span>';
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodTo(''+c+'',this.value)">'+optsTo+'</select>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace">From:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodFrom(\'' + c + '\',this.value)">'+optsFrom+'</select>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace">To:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodTo(\'' + c + '\',this.value)">'+optsTo+'</select>';
   }
   strip.innerHTML=h;
   const hint=document.getElementById('period-hint-'+c);
