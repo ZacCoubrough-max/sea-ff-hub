@@ -317,9 +317,7 @@
     <input class="login-input" type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password" />
     <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in</button>
     <div class="login-err" id="login-err"></div>
-    <p style="text-align:center;margin-top:16px;font-size:10px;font-family:'DM Mono',monospace;">
-      <a href="#" onclick="resetPassword();return false;" style="color:var(--muted);text-decoration:none;letter-spacing:.5px;" onmouseover="this.style.color='var(--yellow)'" onmouseout="this.style.color='var(--muted)'">Forgot password?</a>
-    </p>
+
   </div>
 </div>
 
@@ -1387,12 +1385,12 @@ function renderWeeksStrip(c){
   const optsTo=weeks.map(w=>'<option value="'+w+'" '+(w===curTo?'selected':'')+'>'+w+'</option>').join('');
   let h='<span class="weeks-strip-label">Weeks:</span>';
   if(isSingle){
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectSingleWeek(\'' + c + '\',this.value)">'+opts+'</select>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectSingleWeek(''+c+'',this.value)">'+opts+'</select>';
   } else {
-    h+='<span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace">From:</span>';
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodFrom(\'' + c + '\',this.value)">'+optsFrom+'</select>';
-    h+='<span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace">To:</span>';
-    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodTo(\'' + c + '\',this.value)">'+optsTo+'</select>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">From:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodFrom(''+c+'',this.value)">'+optsFrom+'</select>';
+    h+='<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">To:</span>';
+    h+='<select class="filter-select week-sel" style="min-width:120px" onchange="sfsSelectPeriodTo(''+c+'',this.value)">'+optsTo+'</select>';
   }
   strip.innerHTML=h;
   const hint=document.getElementById('period-hint-'+c);
@@ -1712,22 +1710,7 @@ function printWeeklySummary(c){
       +'<button onclick="window.close()" style="background:#eee;border:none;padding:10px 24px;font-weight:700;font-size:13px;cursor:pointer;margin-left:8px">Close</button>'
     +'</div>'
 
-    +'
-<!-- ── Password Reset Modal ───────────────────────────── -->
-<div id="new-pw-modal" style="display:none;position:fixed;inset:0;background:rgba(10,10,10,.85);z-index:3000;align-items:center;justify-content:center;">
-  <div class="login-box" style="text-align:center;">
-    <div class="login-logo">JD Sports SEA</div>
-    <div class="login-tagline" style="margin-bottom:24px;">Set your new password</div>
-    <label class="login-label" for="new-pw-input">New Password</label>
-    <input class="login-input" type="password" id="new-pw-input" placeholder="Min. 6 characters" style="margin-bottom:16px;">
-    <label class="login-label" for="new-pw-confirm">Confirm Password</label>
-    <input class="login-input" type="password" id="new-pw-confirm" placeholder="Repeat password" style="margin-bottom:20px;">
-    <button class="login-btn" id="new-pw-btn" onclick="submitNewPassword()">Update password</button>
-    <div class="login-err" id="new-pw-err"></div>
-  </div>
-</div>
-
-</body></html>';
+    +'</body></html>';
 
   var win=window.open('','_blank','width=900,height=700');
   win.document.write(html);
@@ -3217,8 +3200,6 @@ cncSelectQuarter = function(c, quarter) {
 
 // ── SUPABASE AUTH ──────────────────────────────────────────────────────────
 (async function initAuth() {
-  const _loginBtn = document.getElementById('login-btn');
-  if (_loginBtn) { _loginBtn.disabled = true; _loginBtn.textContent = 'Connecting…'; }
   await new Promise((res, rej) => {
     const s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
@@ -3226,31 +3207,18 @@ cncSelectQuarter = function(c, quarter) {
     document.head.appendChild(s);
   });
   window._supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  if (_loginBtn) { _loginBtn.disabled = false; _loginBtn.textContent = 'Sign in'; }
   const { data: { session } } = await window._supa.auth.getSession();
   if (session) {
     _showApp(session.user);
   }
-  window._supa.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT') { location.reload(); return; }
-    if (event === 'PASSWORD_RECOVERY') { showNewPasswordModal(); return; }
-    if (event === 'SIGNED_IN' && session) {
-      const ls = document.getElementById('login-screen');
-      if (ls && !ls.classList.contains('hidden')) _showApp(session.user);
-    }
+  window._supa.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT') location.reload();
   });
   ['login-email', 'login-pw'].forEach(id => {
     document.getElementById(id)?.addEventListener('keydown', e => {
       if (e.key === 'Enter') doLogin();
     });
   });
-} catch(e) {
-  const errEl = document.getElementById('login-err');
-  const btn = document.getElementById('login-btn');
-  if (errEl) { errEl.textContent = 'Failed to connect. Please refresh the page.'; errEl.classList.add('show'); }
-  if (btn) { btn.disabled = true; btn.textContent = 'Connection failed'; }
-  console.error('initAuth failed:', e);
-}
 })();
 
 async function doLogin() {
@@ -3259,16 +3227,9 @@ async function doLogin() {
   const btn = document.getElementById('login-btn');
   const errEl = document.getElementById('login-err');
   if (!email || !pw) { errEl.textContent = 'Please enter your email and password.'; errEl.classList.add('show'); return; }
-  if (!window._supa) { errEl.textContent = 'Still connecting, please try again in a moment.'; errEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Signing in…'; errEl.classList.remove('show');
   document.querySelectorAll('.login-input').forEach(i => i.classList.remove('err'));
-  let data, error;
-  try {
-    ({ data, error } = await window._supa.auth.signInWithPassword({ email, password: pw }));
-  } catch(e) {
-    errEl.textContent = 'Connection error: ' + e.message; errEl.classList.add('show');
-    btn.disabled = false; btn.textContent = 'Sign in'; return;
-  }
+  const { data, error } = await window._supa.auth.signInWithPassword({ email, password: pw });
   if (error) {
     errEl.textContent = error.message; errEl.classList.add('show');
     document.querySelectorAll('.login-input').forEach(i => i.classList.add('err'));
@@ -3285,7 +3246,6 @@ function _showApp(user) {
     const p = document.createElement('div');
     p.className = 'login-user-pill';
     p.innerHTML = '<span>' + user.email + '</span>'
-      + '<button class="login-signout" onclick="changePassword()">Change password</button>'
       + '<button class="login-signout" onclick="doSignOut()">Sign out</button>';
     hr.prepend(p);
   }
@@ -3299,23 +3259,9 @@ async function doSignOut() {
 }
 
 
-async function changePassword() {
-  const newPw = prompt('Enter your new password (min 6 characters):');
-  if (!newPw || newPw.length < 6) { alert('Password must be at least 6 characters.'); return; }
-  const { error } = await window._supa.auth.updateUser({ password: newPw });
-  if (error) { alert('Error: ' + error.message); }
-  else { alert('Password updated successfully!'); }
-}
 
-async function resetPassword() {
-  const email = (document.getElementById('login-email').value || '').trim();
-  if (!email) { alert('Enter your email address above first.'); return; }
-  const { error } = await window._supa.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://jd-sea-ff-hub.netlify.app'
-  });
-  if (error) { alert('Error: ' + error.message); }
-  else { alert('Password reset email sent to ' + email + '. Check your inbox.'); }
-}
+
+
 
 
 // ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────
@@ -3407,30 +3353,6 @@ function cncPopulateStoreDropdown(c) {
 function cncFilterByStore(c, val) {
   cncState[c].storeFilter = val;
   cncRenderTable(c);
-}
-
-
-function showNewPasswordModal() {
-  const m = document.getElementById('new-pw-modal');
-  if (m) { m.style.display = 'flex'; }
-}
-
-async function submitNewPassword() {
-  const pw = document.getElementById('new-pw-input').value;
-  const pw2 = document.getElementById('new-pw-confirm').value;
-  const err = document.getElementById('new-pw-err');
-  const btn = document.getElementById('new-pw-btn');
-  err.classList.remove('show');
-  if (!pw || pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.classList.add('show'); return; }
-  if (pw !== pw2) { err.textContent = 'Passwords do not match.'; err.classList.add('show'); return; }
-  btn.disabled = true; btn.textContent = 'Updating…';
-  const { data, error } = await window._supa.auth.updateUser({ password: pw });
-  if (error) {
-    err.textContent = error.message; err.classList.add('show');
-    btn.disabled = false; btn.textContent = 'Update password'; return;
-  }
-  document.getElementById('new-pw-modal').style.display = 'none';
-  _showApp(data.user);
 }
 
 </script>
