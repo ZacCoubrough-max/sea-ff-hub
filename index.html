@@ -1712,7 +1712,22 @@ function printWeeklySummary(c){
       +'<button onclick="window.close()" style="background:#eee;border:none;padding:10px 24px;font-weight:700;font-size:13px;cursor:pointer;margin-left:8px">Close</button>'
     +'</div>'
 
-    +'</body></html>';
+    +'
+<!-- ── Password Reset Modal ───────────────────────────── -->
+<div id="new-pw-modal" style="display:none;position:fixed;inset:0;background:rgba(10,10,10,.85);z-index:3000;align-items:center;justify-content:center;">
+  <div class="login-box" style="text-align:center;">
+    <div class="login-logo">JD Sports SEA</div>
+    <div class="login-tagline" style="margin-bottom:24px;">Set your new password</div>
+    <label class="login-label" for="new-pw-input">New Password</label>
+    <input class="login-input" type="password" id="new-pw-input" placeholder="Min. 6 characters" style="margin-bottom:16px;">
+    <label class="login-label" for="new-pw-confirm">Confirm Password</label>
+    <input class="login-input" type="password" id="new-pw-confirm" placeholder="Repeat password" style="margin-bottom:20px;">
+    <button class="login-btn" id="new-pw-btn" onclick="submitNewPassword()">Update password</button>
+    <div class="login-err" id="new-pw-err"></div>
+  </div>
+</div>
+
+</body></html>';
 
   var win=window.open('','_blank','width=900,height=700');
   win.document.write(html);
@@ -3213,8 +3228,13 @@ cncSelectQuarter = function(c, quarter) {
   if (session) {
     _showApp(session.user);
   }
-  window._supa.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT') location.reload();
+  window._supa.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') { location.reload(); return; }
+    if (event === 'PASSWORD_RECOVERY') { showNewPasswordModal(); return; }
+    if (event === 'SIGNED_IN' && session) {
+      const ls = document.getElementById('login-screen');
+      if (ls && !ls.classList.contains('hidden')) _showApp(session.user);
+    }
   });
   ['login-email', 'login-pw'].forEach(id => {
     document.getElementById(id)?.addEventListener('keydown', e => {
@@ -3370,6 +3390,30 @@ function cncPopulateStoreDropdown(c) {
 function cncFilterByStore(c, val) {
   cncState[c].storeFilter = val;
   cncRenderTable(c);
+}
+
+
+function showNewPasswordModal() {
+  const m = document.getElementById('new-pw-modal');
+  if (m) { m.style.display = 'flex'; }
+}
+
+async function submitNewPassword() {
+  const pw = document.getElementById('new-pw-input').value;
+  const pw2 = document.getElementById('new-pw-confirm').value;
+  const err = document.getElementById('new-pw-err');
+  const btn = document.getElementById('new-pw-btn');
+  err.classList.remove('show');
+  if (!pw || pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.classList.add('show'); return; }
+  if (pw !== pw2) { err.textContent = 'Passwords do not match.'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Updating…';
+  const { data, error } = await window._supa.auth.updateUser({ password: pw });
+  if (error) {
+    err.textContent = error.message; err.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Update password'; return;
+  }
+  document.getElementById('new-pw-modal').style.display = 'none';
+  _showApp(data.user);
 }
 
 </script>
