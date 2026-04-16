@@ -1232,14 +1232,10 @@ function renderAlerts(c){
   if(!filterEl){
     const bar=document.createElement('div');
     bar.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;';
-    bar.innerHTML='<span style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted)">Week:</span>'
-      +'<select id="'+filterId+'" class="filter-select" onchange="renderAlerts(''+c+'')">'
-      +'<option value="all">All weeks</option>'
-      +allWeeksWithAlerts.map(w=>'<option value="'+w+'">'+w+'</option>').join('')
-      +'</select>'
-      +'<span id="alert-count-label'+s+'" style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:auto;"></span>';
+    var _opts=allWeeksWithAlerts.map(function(w){return '<option value="'+w+'">'+w+'</option>';}).join('');bar.innerHTML='<span style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted)">Week:</span>'+'<select id="'+filterId+'" class="filter-select"><option value="all">All weeks</option>'+_opts+'</select>'+'<span id="alert-count-label'+s+'" style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:auto;"></span>';
     el.parentNode.insertBefore(bar, el);
     filterEl=document.getElementById(filterId);
+    filterEl.addEventListener('change',function(){renderAlerts(c);});
   } else {
     const current=filterEl.value;
     filterEl.innerHTML='<option value="all">All weeks</option>'
