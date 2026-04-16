@@ -1181,7 +1181,6 @@ function switchTab(c,tab,event){
 function computeAlerts(c, scoredWeeks, targetWeek) {
   const allWeeks = getWeekLabels(c), alerts = [];
   if (allWeeks.length < 2) return alerts;
-  // If targetWeek supplied, evaluate alerts as of that week; else use latest
   const twIdx = targetWeek ? allWeeks.indexOf(targetWeek) : allWeeks.length - 1;
   if (twIdx < 1) return alerts;
   const weeks = allWeeks.slice(0, twIdx + 1);
@@ -1193,37 +1192,31 @@ function computeAlerts(c, scoredWeeks, targetWeek) {
     const history = weeks.map(w => { const s = scoredWeeks[w] && scoredWeeks[w].find(x => x.id === id); return s ? {week: w, ...s} : null; }).filter(Boolean);
     if (history.length < 2) return;
     const name = history[0].name, latest = history[history.length - 1], prev = history[history.length - 2];
-    if (history.length >= 3) { const recent = history.slice(-3); if (recent.every(e => getTier(c, e.score) === 'D')) alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:name,id,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'}); }
+    if (history.length >= 3) { const recent = history.slice(-3); if (recent.every(e => getTier(c, e.score) === 'D')) alerts.push({sev:'high',icon:'🔴',week:latestWk,store:name,id,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'}); }
     const order = {A:4,B:3,C:2,D:1}, drop = order[getTier(c,prev.score)] - order[getTier(c,latest.score)];
-    if (drop >= 2) alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:name,id,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'\u2192'+getTier(c,latest.score)+')'});
-    else if (drop === 1) alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'Tier drop: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
-    if (prev.score - latest.score > 15 && drop === 0) alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
-    if (latest.claimed_pct < claimedFloor) alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
+    if (drop >= 2) alerts.push({sev:'high',icon:'🔴',week:latestWk,store:name,id,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'→'+getTier(c,latest.score)+')'});
+    else if (drop === 1) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'Tier drop: '+getTier(c,prev.score)+' → '+getTier(c,latest.score)});
+    if (prev.score - latest.score > 15 && drop === 0) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
+    if (latest.claimed_pct < claimedFloor) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
     const rise = order[getTier(c,latest.score)] - order[getTier(c,prev.score)];
-    if (rise >= 1) alerts.push({sev:'low',icon:'\uD83D\uDFE2',week:latestWk,store:name,id,msg:'Tier improved: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
+    if (rise >= 1) alerts.push({sev:'low',icon:'🟢',week:latestWk,store:name,id,msg:'Tier improved: '+getTier(c,prev.score)+' → '+getTier(c,latest.score)});
   });
-  // Missing store alert
   const latestIds = new Set((scoredWeeks[latestWk]||[]).map(s => s.id));
   (scoredWeeks[prevWk]||[]).forEach(s => {
-    if (!latestIds.has(s.id)) alerts.push({sev:'med',icon:'\u26A0\uFE0F',week:latestWk,store:s.name,id:s.id,msg:'Missing from '+latestWk+' upload (was present in '+prevWk+')'});
+    if (!latestIds.has(s.id)) alerts.push({sev:'med',icon:'⚠️',week:latestWk,store:s.name,id:s.id,msg:'Missing from '+latestWk+' upload (was present in '+prevWk+')'});
   });
-  // Network floor alert — 3 consecutive weeks below threshold
   if (weeks.length >= 3) {
     const floorThreshold = getNetworkFloor(c);
     const recentAvgs = weeks.slice(-3).map(w => { const s = scoredWeeks[w]; return s ? s.reduce((a,x)=>a+x.score,0)/s.length : null; }).filter(v => v !== null);
     if (recentAvgs.length === 3 && recentAvgs.every(avg => avg < floorThreshold))
-      alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:'NETWORK',id:'__network__',msg:'Network avg below '+floorThreshold+' for 3+ consecutive weeks ('+recentAvgs.map(v=>v.toFixed(0)).join(', ')+')'});
+      alerts.push({sev:'high',icon:'🔴',week:latestWk,store:'NETWORK',id:'__network__',msg:'Network avg below '+floorThreshold+' for 3+ consecutive weeks ('+recentAvgs.map(v=>v.toFixed(0)).join(', ')+')'});
   }
   const so = {high:0,med:1,low:2}; alerts.sort((a,b)=>so[a.sev]-so[b.sev]); return alerts;
 }
 
-// Build full alert log across ALL weeks (one entry per week boundary)
 function buildAlertLog(c, scoredWeeks) {
   const weeks = getWeekLabels(c), log = {};
-  weeks.forEach((w, i) => {
-    if (i < 1) return;
-    log[w] = computeAlerts(c, scoredWeeks, w);
-  });
+  weeks.forEach((w, i) => { if (i >= 1) log[w] = computeAlerts(c, scoredWeeks, w); });
   return log;
 }
 
@@ -1233,12 +1226,9 @@ function renderAlerts(c){
   if(!el)return;
   if(weeks.length<2){el.innerHTML='<div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div>';return;}
   const log=buildAlertLog(c,sw);
-  // Determine selected filter week
   const filterId='alert-week-filter'+s;
   let filterEl=document.getElementById(filterId);
-  const allWeeksWithAlerts=weeks.slice(1); // weeks that can have alerts (need a prev)
-  const selWeek=filterEl?filterEl.value:'all';
-  // Build filter bar if not present
+  const allWeeksWithAlerts=weeks.slice(1);
   if(!filterEl){
     const bar=document.createElement('div');
     bar.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;';
@@ -1251,26 +1241,18 @@ function renderAlerts(c){
     el.parentNode.insertBefore(bar, el);
     filterEl=document.getElementById(filterId);
   } else {
-    // Refresh options in case new weeks were loaded
     const current=filterEl.value;
     filterEl.innerHTML='<option value="all">All weeks</option>'
       +allWeeksWithAlerts.map(w=>'<option value="'+w+'">'+w+'</option>').join('');
     filterEl.value=current&&allWeeksWithAlerts.includes(current)?current:'all';
   }
   const activeWeek=filterEl.value;
-  // Collect alerts to display
   let display=[];
   if(activeWeek==='all'){
-    // Show all weeks, grouped
-    allWeeksWithAlerts.slice().reverse().forEach(w=>{
-      const wa=log[w]||[];
-      if(wa.length) display.push({week:w,alerts:wa});
-    });
+    allWeeksWithAlerts.slice().reverse().forEach(w=>{ const wa=log[w]||[]; if(wa.length) display.push({week:w,alerts:wa}); });
   } else {
-    const wa=log[activeWeek]||[];
-    display=[{week:activeWeek,alerts:wa}];
+    display=[{week:activeWeek,alerts:log[activeWeek]||[]}];
   }
-  // Count label
   const totalAlerts=display.reduce((a,g)=>a+g.alerts.filter(x=>x.sev!=='low').length,0);
   const countLbl=document.getElementById('alert-count-label'+s);
   if(countLbl) countLbl.textContent=totalAlerts+' active alert'+(totalAlerts!==1?'s':'');
@@ -1280,8 +1262,7 @@ function renderAlerts(c){
   el.innerHTML=display.map(g=>{
     if(!g.alerts.length) return '<div style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted);padding:8px 0;">'+g.week+' — no alerts</div>';
     return '<div class="alert-week-group">'
-      +'<div class="alert-week-header">'+g.week
-      +' <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);font-weight:400;">('+g.alerts.filter(a=>a.sev!=='low').length+' high/med)</span></div>'
+      +'<div class="alert-week-header">'+g.week+' <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);font-weight:400;">('+g.alerts.filter(a=>a.sev!=='low').length+' high/med)</span></div>'
       +g.alerts.map(a=>'<div class="alert-item alert-sev-'+a.sev+'" onclick="openDrawer(''+c+'',''+a.id+'')">'
         +'<span class="alert-icon">'+a.icon+'</span>'
         +'<div class="alert-body"><div class="alert-store">'+a.store+'</div>'
@@ -1291,8 +1272,7 @@ function renderAlerts(c){
 }
 
 function updateAlertBadge(c,sw){
-  const weeks=getWeekLabels(c);
-  const latestWk=weeks.length?weeks[weeks.length-1]:null;
+  const weeks=getWeekLabels(c), latestWk=weeks.length?weeks[weeks.length-1]:null;
   const alerts=latestWk?computeAlerts(c,sw,latestWk):[];
   const count=alerts.filter(a=>a.sev!=='low').length;
   const badge=document.getElementById('alert-count-'+c);
@@ -3175,10 +3155,8 @@ cncSelectMonth = function(c, month) {
 
 
 // ════════════════════════════════════════════════════════
-//  UNDO / DELETE / FILENAME VALIDATION  (v15)
+//  UNDO / DELETE / FILENAME VALIDATION  (v16)
 // ════════════════════════════════════════════════════════
-
-// Track last uploads for undo { sfs_MY: {week, ts}, cnc_SG: {week, ts}, ... }
 var _lastUpload = {};
 var _undoTimers = {};
 
@@ -3188,7 +3166,6 @@ function _showUndoBtn(prog, c, weekLabel) {
   var existing = document.getElementById(btnId);
   if (existing) existing.remove();
   clearTimeout(_undoTimers[key]);
-
   var topBar = document.querySelector('#prog-' + prog + '-' + c + ' .top-bar');
   if (!topBar) return;
   var btn = document.createElement('button');
@@ -3198,47 +3175,26 @@ function _showUndoBtn(prog, c, weekLabel) {
   btn.textContent = '↩ Undo upload (' + weekLabel + ')';
   btn.onclick = function() { _undoUpload(prog, c, weekLabel); };
   topBar.appendChild(btn);
-
-  _undoTimers[key] = setTimeout(function() {
-    var b = document.getElementById(btnId);
-    if (b) b.remove();
-  }, 10 * 60 * 1000);
+  _undoTimers[key] = setTimeout(function() { var b = document.getElementById(btnId); if (b) b.remove(); }, 10 * 60 * 1000);
 }
 
 async function _undoUpload(prog, c, weekLabel) {
-  if (!confirm('Remove upload for ' + weekLabel + '? This will delete all rows for this week from the database.')) return;
+  if (!confirm('Remove upload for ' + weekLabel + '? This will delete all rows for this week.')) return;
   try {
-    var table = prog === 'sfs' ? 'sfsdata' : 'cncdata';
+    var table = prog === 'sfs' ? 'sfs_data' : 'cnc_data';
     var { error } = await window._supabase.from(table).delete().eq('country', c).eq('week', weekLabel);
     if (error) throw error;
-    var btnId = 'undo-btn-' + prog + '-' + c;
-    var b = document.getElementById(btnId);
+    var b = document.getElementById('undo-btn-' + prog + '-' + c);
     if (b) b.remove();
     alert('Upload for ' + weekLabel + ' removed.');
     if (prog === 'sfs') { syncCountry(c); } else { cncSyncCountry(c); }
-  } catch(e) {
-    alert('Error removing upload: ' + e.message);
-  }
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
-async function _deleteWeek(prog, c, weekLabel) {
-  if (!confirm('Delete ALL data for week "' + weekLabel + '" (' + prog.toUpperCase() + ' ' + c + ')? This cannot be undone.')) return;
-  try {
-    var table = prog === 'sfs' ? 'sfsdata' : 'cncdata';
-    var { error } = await window._supabase.from(table).delete().eq('country', c).eq('week', weekLabel);
-    if (error) throw error;
-    alert(weekLabel + ' deleted.');
-    if (prog === 'sfs') { syncCountry(c); } else { cncSyncCountry(c); }
-  } catch(e) {
-    alert('Error deleting week: ' + e.message);
-  }
-}
-
-// Filename validation helpers
 function _validateSFSFilename(filename, c) {
   var pattern = new RegExp('^SFS_' + c + '_\\d{4}-\\d{2}-\\d{2}\\.csv$', 'i');
   if (!pattern.test(filename)) {
-    alert('Incorrect filename.\nExpected format: SFS_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
+    alert('Incorrect filename.\nExpected: SFS_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
     return false;
   }
   return true;
@@ -3247,7 +3203,7 @@ function _validateSFSFilename(filename, c) {
 function _validateCNCFilename(filename, c) {
   var pattern = new RegExp('^CNC_' + c + '_\\d{4}-\\d{2}-\\d{2}\\.csv$', 'i');
   if (!pattern.test(filename)) {
-    alert('Incorrect filename.\nExpected format: CNC_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
+    alert('Incorrect filename.\nExpected: CNC_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
     return false;
   }
   return true;
