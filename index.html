@@ -237,6 +237,9 @@
 
   .quarter-bar{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
   .quarter-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0;margin-right:2px;}
+  .filter-select{font-family:'DM Mono',monospace;font-size:10px;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:0.5px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+  .filter-select:hover{border-color:var(--yellow);color:var(--yellow);}
+  .filter-select:focus{outline:none;border-color:var(--yellow);color:var(--yellow);}
   .quarter-btn{font-family:'DM Mono',monospace;font-size:10px;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:0.5px;}
   .quarter-btn:hover{border-color:var(--yellow);color:var(--yellow);}
   .quarter-btn.active{border-color:var(--yellow);background:var(--yellow-glow);color:var(--yellow);}
@@ -315,8 +318,8 @@
         <div class="week-count-badge" id="week-count-badge-MY" style="margin-left:auto">SFS MY &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('MY','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('MY','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('MY','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('MY','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('MY','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('MY','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('MY','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('MY','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('MY','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('MY','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('MY','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="sfs-quarter-sel-MY" onchange="sfsSelectQuarter('MY',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="sfs-month-sel-MY" onchange="sfsSelectMonth('MY',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-MY"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-MY"></div>
@@ -478,8 +481,8 @@
         <div class="week-count-badge" id="week-count-badge-SG" style="margin-left:auto">SFS SG &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('SG','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('SG','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('SG','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('SG','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('SG','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('SG','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('SG','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('SG','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('SG','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('SG','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('SG','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="sfs-quarter-sel-SG" onchange="sfsSelectQuarter('SG',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="sfs-month-sel-SG" onchange="sfsSelectMonth('SG',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-SG"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-SG"></div>
@@ -641,8 +644,8 @@
         <div class="week-count-badge" id="week-count-badge-TH" style="margin-left:auto">SFS TH &mdash; 0 WKS</div>
       </div>
       <div class="weeks-area">
-  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q1')">Q1</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q2')">Q2</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q3')">Q3</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','Q4')">Q4</button><button class="quarter-btn" onclick="sfsSelectQuarter('TH','')">All</button></div>
-            <div class="month-bar"><span class="month-label">Month:</span><button class="month-btn" onclick="sfsSelectMonth('TH','Feb')">Feb</button><button class="month-btn" onclick="sfsSelectMonth('TH','Mar')">Mar</button><button class="month-btn" onclick="sfsSelectMonth('TH','Apr')">Apr</button><button class="month-btn" onclick="sfsSelectMonth('TH','May')">May</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jun')">Jun</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jul')">Jul</button><button class="month-btn" onclick="sfsSelectMonth('TH','Aug')">Aug</button><button class="month-btn" onclick="sfsSelectMonth('TH','Sep')">Sep</button><button class="month-btn" onclick="sfsSelectMonth('TH','Oct')">Oct</button><button class="month-btn" onclick="sfsSelectMonth('TH','Nov')">Nov</button><button class="month-btn" onclick="sfsSelectMonth('TH','Dec')">Dec</button><button class="month-btn" onclick="sfsSelectMonth('TH','Jan')">Jan</button></div>
+  <div class="quarter-bar"><span class="quarter-label">Quarter:</span><select class="filter-select" id="sfs-quarter-sel-TH" onchange="sfsSelectQuarter('TH',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="month-bar"><span class="month-label">Month:</span><select class="filter-select" id="sfs-month-sel-TH" onchange="sfsSelectMonth('TH',this.value)"><option value="">All months</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
       <div class="weeks-strip-row" id="weeks-strip-TH"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="period-hint" id="period-hint-TH"></div>
@@ -1373,16 +1376,43 @@ function renderSparkline(c,id,sw){
 }
 
 function renderWeeksStrip(c){
-  const weeks=getWeekLabels(c),strip=document.getElementById('weeks-strip-'+c),badge=document.getElementById('week-count-badge-'+c);
-  if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' \u2014 0 WEEKS';return;}
-  badge.textContent=c+' \u2014 '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
-  const pp=state[c].mode==='period'?getPriorPeriod(c,state[c].selectedWeeks):[];
-  let html='<span class="weeks-strip-label">Weeks:</span>';
-  weeks.forEach(w=>{const inA=state[c].selectedWeeks.includes(w),inB=pp.includes(w),cls=inA?'in-period-a':inB?'in-period-b':'';html+='<div class="week-chip '+cls+'" data-week="'+w.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" data-country="'+c+'" data-action="chip"><span class="chip-lbl" style="pointer-events:none">'+w+'</span><span class="del" data-action="del" style="cursor:pointer;padding:0 2px;color:var(--muted)">\u2715</span></div>';});
+  var weeks=getWeekLabels(c),strip=document.getElementById('weeks-strip-'+c),badge=document.getElementById('week-count-badge-'+c);
+  if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' — 0 WEEKS';return;}
+  badge.textContent=c+' — '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
+  var isSingle=state[c].mode==='single';
+  var selId='sfs-week-sel-'+c;
+  var html='<span class="weeks-strip-label">Weeks:</span>';
+  if(isSingle){
+    html+='<select class="filter-select" id="'+selId+'" style="min-width:120px;">';
+    weeks.forEach(function(w){
+      html+='<option value="'+w+'"'+(state[c].selectedWeeks[0]===w?' selected':'')+'>'+w+'</option>';
+    });
+    html+='</select>';
+  } else {
+    html+='<select class="filter-select" id="'+selId+'" multiple style="min-width:140px;border-radius:12px;height:auto;padding:4px 10px;">';
+    weeks.forEach(function(w){
+      html+='<option value="'+w+'"'+(state[c].selectedWeeks.includes(w)?' selected':'')+'>'+w+'</option>';
+    });
+    html+='</select>';
+    html+='<span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:4px;">Ctrl/Cmd+click to multi-select</span>';
+  }
   strip.innerHTML=html;
-  const hint=document.getElementById('period-hint-'+c);
+  var selEl=document.getElementById(selId);
+  if(selEl){
+    selEl.addEventListener('change',function(){
+      var selected=Array.from(this.selectedOptions).map(function(o){return o.value;});
+      state[c].selectedWeeks=selected.length?selected:[weeks[weeks.length-1]];
+      renderAll(c);
+    });
+  }
+  var hint=document.getElementById('period-hint-'+c);
   if(state[c].mode==='single'){hint.innerHTML='';}
-  else{const pp2=getPriorPeriod(c,state[c].selectedWeeks),aL=state[c].selectedWeeks.length===1?state[c].selectedWeeks[0]:state[c].selectedWeeks[0]+' \u2192 '+state[c].selectedWeeks[state[c].selectedWeeks.length-1],bL=pp2.length?(pp2[0]+(pp2.length>1?' \u2192 '+pp2[pp2.length-1]:'')):'(no prior period)';hint.innerHTML='<span>Current: <strong style="color:var(--text)">'+aL+'</strong></span>&nbsp;&nbsp;<span>Prior: <strong style="color:var(--text)">'+bL+'</strong></span>';}
+  else{
+    var pp2=getPriorPeriod(c,state[c].selectedWeeks);
+    var aL=state[c].selectedWeeks.length===1?state[c].selectedWeeks[0]:state[c].selectedWeeks[0]+' → '+state[c].selectedWeeks[state[c].selectedWeeks.length-1];
+    var bL=pp2.length?(pp2[0]+(pp2.length>1?' → '+pp2[pp2.length-1]:'')):'(no prior period)';
+    hint.innerHTML='<span>Current: <strong style="color:var(--text)">'+aL+'</strong></span>&nbsp;&nbsp;<span>Prior: <strong style="color:var(--text)">'+bL+'</strong></span>';
+  }
 }
 
 function renderTable(c){
@@ -2247,14 +2277,36 @@ function cncChipClick(c, label, e) {
 function cncGetPriorPeriod(c, sel) { const all = cncGetWeekLabels(c), n = sel.length, first = all.indexOf(sel[0]); if (first < n) return []; return all.slice(first - n, first); }
 
 function cncRenderWeeksStrip(c) {
-  const weeks = cncGetWeekLabels(c), strip = document.getElementById('cnc-weeks-strip-' + c);
-  const badge = document.getElementById('cnc-week-count-badge-' + c);
-  if (!weeks.length) { strip.innerHTML = '<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>'; badge.textContent = c + ' C&C \u2014 0 WEEKS'; return; }
-  badge.textContent = c + ' C&C \u2014 ' + weeks.length + ' WEEK' + (weeks.length !== 1 ? 'S' : '');
-  const pp = cncState[c].mode === 'period' ? cncGetPriorPeriod(c, cncState[c].selectedWeeks) : [];
-  let html = '<span class="weeks-strip-label">Weeks:</span>';
-  weeks.forEach(w => { const inA = cncState[c].selectedWeeks.includes(w), inB = pp.includes(w), cls = inA ? 'in-period-a' : inB ? 'in-period-b' : ''; html += '<div class="week-chip ' + cls + '" data-week="' + w.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '" data-country="' + c + '" data-prog="cnc" data-action="chip"><span class="chip-lbl" style="pointer-events:none">' + w + '</span><span class="del" data-action="del" style="cursor:pointer;padding:0 2px;color:var(--muted)">\u2715</span></div>'; });
-  strip.innerHTML = html;
+  var weeks=cncGetWeekLabels(c),strip=document.getElementById('cnc-weeks-strip-'+c);
+  var badge=document.getElementById('cnc-week-count-badge-'+c);
+  if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' C&C — 0 WEEKS';return;}
+  badge.textContent=c+' C&C — '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
+  var isSingle=cncState[c].mode==='single';
+  var selId='cnc-week-sel-'+c;
+  var html='<span class="weeks-strip-label">Weeks:</span>';
+  if(isSingle){
+    html+='<select class="filter-select" id="'+selId+'" style="min-width:120px;">';
+    weeks.forEach(function(w){
+      html+='<option value="'+w+'"'+(cncState[c].selectedWeeks[0]===w?' selected':'')+'>'+w+'</option>';
+    });
+    html+='</select>';
+  } else {
+    html+='<select class="filter-select" id="'+selId+'" multiple style="min-width:140px;border-radius:12px;height:auto;padding:4px 10px;">';
+    weeks.forEach(function(w){
+      html+='<option value="'+w+'"'+(cncState[c].selectedWeeks.includes(w)?' selected':'')+'>'+w+'</option>';
+    });
+    html+='</select>';
+    html+='<span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:4px;">Ctrl/Cmd+click to multi-select</span>';
+  }
+  strip.innerHTML=html;
+  var selEl=document.getElementById(selId);
+  if(selEl){
+    selEl.addEventListener('change',function(){
+      var selected=Array.from(this.selectedOptions).map(function(o){return o.value;});
+      cncState[c].selectedWeeks=selected.length?selected:[weeks[weeks.length-1]];
+      cncRenderAll(c);
+    });
+  }
 }
 
 // ── C&C Tab switching ─────────────────────────────────────────────────────────
@@ -3139,6 +3191,24 @@ sfsSelectQuarter = function(c, quarter) {
     btn.classList.remove('active');
   });
   _origSfsSelectQuarter(c, quarter);
+};
+
+var _origSfsSelectQuarter = sfsSelectQuarter;
+sfsSelectQuarter = function(c, quarter) {
+  _origSfsSelectQuarter(c, quarter);
+  var qSel = document.getElementById('sfs-quarter-sel-' + c);
+  if (qSel) qSel.value = quarter || '';
+  var mSel = document.getElementById('sfs-month-sel-' + c);
+  if (mSel) mSel.value = '';
+};
+
+var _origSfsSelectMonth = sfsSelectMonth;
+sfsSelectMonth = function(c, month) {
+  _origSfsSelectMonth(c, month);
+  var mSel = document.getElementById('sfs-month-sel-' + c);
+  if (mSel) mSel.value = month || '';
+  var qSel = document.getElementById('sfs-quarter-sel-' + c);
+  if (qSel && month) qSel.value = '';
 };
 
 var _origCncSelectQuarter = cncSelectQuarter;
