@@ -295,6 +295,7 @@
   <button class="country-tab" id="ctab-SG" onclick="switchCountry('SG')">&#127480;&#127468; Singapore</button>
   <button class="country-tab" id="ctab-TH" onclick="switchCountry('TH')">&#127481;&#127469; Thailand</button>
   <button class="country-tab" id="ctab-future" onclick="switchCountry('future')" style="margin-left:auto;color:var(--text);font-style:italic">&#9729; Future</button>
+  <button class="country-tab" id="ctab-guide" onclick="switchCountry('guide')" style="color:var(--yellow)">&#9432; Guide</button>
 </div>
 
 <div class="country-panel active" id="cpanel-MY">
@@ -871,6 +872,418 @@
 </div>
 
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+
+<div class="country-panel" id="cpanel-guide" style="display:none">
+  <div class="country-panel-wrap">
+    <div style="max-width:800px;margin:0 auto;padding:28px 0 60px">
+
+      <!-- HEADER -->
+      <div style="border-bottom:3px solid var(--yellow);padding-bottom:16px;margin-bottom:28px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)">JD Sports SEA — Fulfilment Hub</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:5px">How to use this dashboard &nbsp;·&nbsp; Ship From Store &amp; Click &amp; Collect &nbsp;·&nbsp; MY · SG · TH</div>
+      </div>
+
+      <!-- ACCORDION STYLES -->
+      <style>
+        .guide-acc { border:1px solid var(--border); border-radius:6px; margin-bottom:10px; overflow:hidden; }
+        .guide-acc-hdr {
+          display:flex; align-items:center; justify-content:space-between;
+          padding:14px 18px; cursor:pointer; background:var(--surface2);
+          user-select:none; transition:background 0.15s;
+        }
+        .guide-acc-hdr:hover { background:var(--surface); }
+        .guide-acc-hdr-left { display:flex; align-items:center; gap:12px; }
+        .guide-acc-icon { font-size:18px; }
+        .guide-acc-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--text); }
+        .guide-acc-chevron { font-family:'DM Mono',monospace; font-size:14px; color:var(--yellow); transition:transform 0.2s; }
+        .guide-acc-body { display:none; padding:18px 18px 20px; background:var(--surface); border-top:1px solid var(--border); }
+        .guide-acc.open .guide-acc-body { display:block; }
+        .guide-acc.open .guide-acc-chevron { transform:rotate(90deg); }
+        .guide-acc.open .guide-acc-hdr { background:var(--surface); }
+        .gacc-table { width:100%; border-collapse:collapse; margin-top:10px; }
+        .gacc-table th { font-family:'DM Mono',monospace; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); padding:7px 10px; border-bottom:1px solid var(--border); text-align:left; }
+        .gacc-table td { font-family:'Share Tech Mono',monospace; font-size:11.5px; color:var(--text); padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.6; }
+        .gacc-table tr:last-child td { border-bottom:none; }
+        .gacc-table tr:nth-child(odd) td { background:var(--surface2); }
+        .gacc-table td:first-child { color:var(--yellow); font-weight:700; white-space:nowrap; }
+        .gacc-ul { margin:0; padding:0; list-style:none; }
+        .gacc-ul li { font-family:'Share Tech Mono',monospace; font-size:12px; color:var(--text); padding:6px 0; border-bottom:1px solid var(--border); line-height:1.6; }
+        .gacc-ul li:last-child { border-bottom:none; }
+        .gacc-ul li::before { content:"▶ "; color:var(--yellow); font-size:9px; }
+        .gacc-body-intro { font-family:'Share Tech Mono',monospace; font-size:12px; color:var(--muted); line-height:1.7; margin-bottom:12px; }
+        .gacc-tag-valid { font-family:'DM Mono',monospace; font-size:10px; color:#22c55e; }
+        .gacc-tag-invalid { font-family:'DM Mono',monospace; font-size:10px; color:#ef4444; }
+        .gacc-warn { background:rgba(239,68,68,0.08); border-left:3px solid #ef4444; padding:10px 14px; border-radius:0 4px 4px 0; margin-top:10px; font-family:'Share Tech Mono',monospace; font-size:11.5px; color:var(--text); line-height:1.6; }
+        .gacc-info { background:var(--surface2); border-left:3px solid var(--yellow); padding:10px 14px; border-radius:0 4px 4px 0; margin-top:10px; font-family:'Share Tech Mono',monospace; font-size:11.5px; color:var(--text); line-height:1.6; }
+        .tier-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; }
+        .tier-card { padding:12px 8px; border-radius:6px; text-align:center; }
+        .step-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:12px 0; }
+        .step-card { background:var(--surface2); padding:10px 8px; border-radius:6px; text-align:center; }
+        .step-num { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:900; color:var(--yellow); }
+        .step-lbl { font-family:'Share Tech Mono',monospace; font-size:9.5px; color:var(--text); margin-top:3px; line-height:1.4; }
+        .prog-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px; }
+        .prog-card { background:var(--surface2); border-top:3px solid var(--yellow); padding:14px 16px; border-radius:0 0 6px 6px; }
+        .prog-card-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px; color:var(--text); margin-bottom:6px; }
+        .prog-card-body { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--muted); line-height:1.6; }
+      </style>
+
+      <!-- 1. WHAT IS THIS -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🏪</span>
+            <span class="guide-acc-title">What is this?</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">The <strong>JD Sports SEA Fulfilment Hub</strong> is a weekly performance dashboard for tracking how well stores across Malaysia, Singapore and Thailand are fulfilling customer orders through two programmes.</p>
+          <div class="prog-grid">
+            <div class="prog-card">
+              <div class="prog-card-title">SFS — SHIP FROM STORE</div>
+              <div class="prog-card-body">Store staff pick and ship online orders directly from the shop floor. The hub tracks how fast, reliably and frequently each store fulfils these orders each week.</div>
+            </div>
+            <div class="prog-card">
+              <div class="prog-card-title">C&amp;C — CLICK &amp; COLLECT</div>
+              <div class="prog-card-body">Customers order online and collect in store. The hub tracks how many orders were claimed and bagged, how long it took, and how much revenue was missed due to unclaimed orders.</div>
+            </div>
+          </div>
+          <div class="gacc-info" style="margin-top:14px">All data is stored in a live cloud database (Supabase) — uploads are visible to all users immediately, across all countries and programmes.</div>
+        </div>
+      </div>
+
+      <!-- 2. WHO IS IT FOR -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">👥</span>
+            <span class="guide-acc-title">Who is it for?</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <ul class="gacc-ul">
+            <li><strong>Ecommerce &amp; Operations Managers</strong> — monitor network performance, identify underperforming stores, track weekly trends across all markets</li>
+            <li><strong>Country Leads (MY / SG / TH)</strong> — view their market in isolation, compare week-on-week or across a multi-week period</li>
+            <li><strong>Admins</strong> — upload weekly CSV data, adjust scoring configs, delete incorrect weeks from the database</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. GETTING IN -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🔐</span>
+            <span class="guide-acc-title">Getting in — Login</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">When you open the hub a login screen is shown before any data is visible. You need a <strong>Supabase username and password</strong> — these are set up per user in the Supabase dashboard. Contact your admin to get credentials. Your session stays active until you close or refresh the tab.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div class="step-card"><div class="step-num">1</div><div class="step-lbl">Open the HTML file in Chrome, Edge or Safari</div></div>
+            <div class="step-card"><div class="step-num">2</div><div class="step-lbl">Enter your Supabase username and password on the login screen</div></div>
+            <div class="step-card"><div class="step-num">3</div><div class="step-lbl">Dashboard loads — select your country and programme</div></div>
+          </div>
+          <div style="margin-top:12px;background:var(--surface2);border-radius:6px;overflow:hidden">
+            <div style="background:var(--surface);padding:8px 12px;border-bottom:1px solid var(--border)">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Two separate passwords</span>
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+              <tr>
+                <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;vertical-align:top;width:140px">Supabase login</td>
+                <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:10px 12px;border-bottom:1px solid var(--border);line-height:1.6">Your personal username + password to access the dashboard. Managed in Supabase Authentication. Contact your admin to be provisioned.</td>
+              </tr>
+              <tr>
+                <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:10px 12px;vertical-align:top">Admin password</td>
+                <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:10px 12px;line-height:1.6">A separate password built into the tool — required to unlock scoring sliders, save configs, delete weeks and delete configs. This is not your Supabase login. See the Scores &amp; Tiers section for details.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. NAVIGATING -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🗂️</span>
+            <span class="guide-acc-title">Navigating the dashboard</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">The dashboard has three levels. Start at the top and work down — country, then programme, then view.</p>
+          <table class="gacc-table">
+            <tr><th>Level</th><th>What it does</th></tr>
+            <tr><td>Country tabs</td><td>Select Malaysia, Singapore or Thailand at the very top of the page</td></tr>
+            <tr><td>Programme tabs</td><td>Switch between SFS and C&amp;C within each country panel</td></tr>
+            <tr><td>View tabs</td><td>Stores · Health · Movers · Alerts · Overall · Settings — each shows a different angle on the data</td></tr>
+            <tr><td>Filters</td><td>Quarter → Month → Week dropdowns let you narrow to the exact period you want to view</td></tr>
+            <tr><td>Single / Period</td><td>Toggle between viewing one week or comparing a range of weeks against the prior equivalent period</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. UPLOADING -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">📤</span>
+            <span class="guide-acc-title">Uploading weekly data</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">Data is uploaded once per week, per country, per programme. Each upload adds a new week to the live database — visible to all users immediately.</p>
+          <div class="step-grid">
+            <div class="step-card"><div class="step-num">1</div><div class="step-lbl">Type the week label e.g. W12 2026</div></div>
+            <div class="step-card"><div class="step-num">2</div><div class="step-lbl">Wait for the green ✓ to appear next to the field</div></div>
+            <div class="step-card"><div class="step-num">3</div><div class="step-lbl">Click Upload SFS CSV or Upload C&amp;C CSV</div></div>
+            <div class="step-card"><div class="step-num">4</div><div class="step-lbl">Select the prepared CSV from your computer</div></div>
+            <div class="step-card"><div class="step-num">5</div><div class="step-lbl">Wait for Saved ✓ confirmation message</div></div>
+          </div>
+          <div class="gacc-info">
+            <strong>Week label format:</strong> Must be W[1–52] followed by a 4-digit year.<br>
+            <span class="gacc-tag-valid">✓ Valid: W1 2026 &nbsp; W9 2026 &nbsp; W12 2026 &nbsp; W52 2026</span><br>
+            <span class="gacc-tag-invalid">✗ Invalid: WEEK 1 2026 &nbsp; W53 2026 &nbsp; w12 2026 &nbsp; W1 26</span><br><br>
+            The upload button is <strong>disabled</strong> until the label passes this check. A red hint shows exactly what the expected format is if you get it wrong.
+          </div>
+
+          <div style="margin-top:16px">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.5px;margin-bottom:10px">Data originates from <strong style="color:var(--text)">Onestock</strong>. Both programmes require a separate CSV export. Uploading a week that already exists will prompt for confirmation before overwriting.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+              <!-- SFS -->
+              <div style="background:var(--surface2);border-radius:6px;overflow:hidden">
+                <div style="background:var(--yellow);padding:8px 12px">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;color:#000">SFS — WHERE TO FIND THE EXPORT</div>
+                </div>
+                <div style="padding:10px 12px">
+                  <table style="width:100%;border-collapse:collapse">
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top;white-space:nowrap">1</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Log in to <strong>Onestock</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">2</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Go to <strong>BI Suite</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">3</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Navigate to <strong>Competitive Analysis</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">4</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Open <strong>"Orders to claim vs claimed orders"</strong> report</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">5</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Check the <strong>date range</strong> matches the week being uploaded</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">6</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;line-height:1.5"><strong>Export as CSV</strong></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <!-- C&C -->
+              <div style="background:var(--surface2);border-radius:6px;overflow:hidden">
+                <div style="background:var(--yellow);padding:8px 12px">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;color:#000">C&amp;C — WHERE TO FIND THE EXPORT</div>
+                </div>
+                <div style="padding:10px 12px">
+                  <table style="width:100%;border-collapse:collapse">
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top;white-space:nowrap">1</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Log in to <strong>Onestock</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">2</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Go to <strong>BI Suite</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">3</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Navigate to <strong>Performance: Click and Collect</strong></td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">4</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Open the <strong>Bag Performance</strong> report</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">5</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5">Check the <strong>date range</strong> matches the week being uploaded</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--yellow);padding:5px 8px 5px 0;vertical-align:top">6</td>
+                      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:5px 0;line-height:1.5"><strong>Export as CSV</strong></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. VIEW TABS -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">📊</span>
+            <span class="guide-acc-title">What each view tab shows</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <table class="gacc-table">
+            <tr><th>Tab</th><th>What you see</th></tr>
+            <tr><td>Stores</td><td>Full ranked table of every store for the selected week — rank, score, tier, claimed %, speed, orders/day. Click any row to open a drawer showing that store's full history, KPI trend chart and notes.</td></tr>
+            <tr><td>Health</td><td>Network-level charts showing score distribution, claimed % and reliability trends across all weeks currently loaded. Good for spotting macro patterns over time.</td></tr>
+            <tr><td>Movers</td><td>Top 5 most improved and most declined stores week-on-week. Use this to quickly identify which stores need immediate attention or recognition.</td></tr>
+            <tr><td>Alerts</td><td>Auto-generated flags for stores with meaningful drops in score, claimed % or reliability. Severity is High (red) or Medium (amber). Low-severity alerts are suppressed to reduce noise.</td></tr>
+            <tr><td>Overall</td><td>All-time average view across every week loaded — scores, claimed %, reliability, speed and trend direction. Useful for identifying consistently strong or consistently weak stores regardless of any single week.</td></tr>
+            <tr><td>Settings</td><td>Adjust scoring weights (how much each KPI counts) and tier thresholds. Requires admin password to unlock sliders. Saved configs are stored in Supabase against a specific week.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 7. SFS KPIs -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">📦</span>
+            <span class="guide-acc-title">SFS — KPIs explained</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">Ship From Store performance is measured across four KPIs. Each is weighted and combined into a single composite score out of 100. Scores are relative — a store is ranked against the rest of the network, not against a fixed target.</p>
+          <table class="gacc-table">
+            <tr><th>KPI</th><th>What it measures</th><th>Why it matters</th></tr>
+            <tr><td>Claimed %</td><td>The percentage of SFS orders that were accepted and claimed by store staff within the required window</td><td>A low claimed % means orders are being missed — either ignored or not actioned in time. This is the most important KPI as it directly impacts whether the customer gets their order.</td></tr>
+            <tr><td>Reliability</td><td>The percentage of claimed orders that were successfully fulfilled without being cancelled or rejected after claiming</td><td>A store can claim an order but then fail to fulfil it (e.g. item not found). High reliability means the store follows through on what it claims.</td></tr>
+            <tr><td>Avg TTC (Speed)</td><td>Average Time To Claim — how long in hours it takes for store staff to action an order from the moment it arrives</td><td>Faster is better. Customers expect quick despatch. Stores that sit on orders for hours before actioning them rank lower on speed.</td></tr>
+            <tr><td>Orders / Day</td><td>Average number of SFS orders processed by the store per trading day in the selected week</td><td>Measures volume throughput. A store processing more orders per day is contributing more to the SFS network capacity.</td></tr>
+          </table>
+          <div class="gacc-info" style="margin-top:12px">Weights for each KPI are adjustable in the Settings tab (admin only). The total must always equal 100%.</div>
+        </div>
+      </div>
+
+      <!-- 8. C&C KPIs -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🛍️</span>
+            <span class="guide-acc-title">C&amp;C — KPIs explained</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">Click &amp; Collect performance is measured across metrics that track whether stores are successfully preparing orders for customer collection and how much revenue is at risk from failures.</p>
+          <table class="gacc-table">
+            <tr><th>KPI</th><th>What it measures</th><th>Why it matters</th></tr>
+            <tr><td>Claimed</td><td>Number of C&amp;C orders that store staff accepted and began processing</td><td>The starting point — if an order isn't claimed it won't be prepared for collection.</td></tr>
+            <tr><td>Unclaimed</td><td>Number of orders that were not actioned by the store within the required window</td><td>Unclaimed orders result in failed collections and lost revenue. A high unclaimed count is a red flag.</td></tr>
+            <tr><td>Unavailable</td><td>Orders where the item was claimed but the product could not be found in store</td><td>Indicates stock accuracy issues or items being sold on the shop floor that are allocated to C&amp;C orders.</td></tr>
+            <tr><td>Pct Bagged</td><td>Percentage of C&amp;C orders that were physically bagged and ready for customer collection</td><td>The key operational output — a high bagged % means the store is executing well end-to-end.</td></tr>
+            <tr><td>TTB (Time to Bag)</td><td>Average time in hours from order arrival to the order being bagged and ready</td><td>Customers expect their order to be ready quickly. Long TTB times lead to poor collection experience.</td></tr>
+            <tr><td>Missed Revenue</td><td>Total revenue value of orders that were unclaimed or unavailable and therefore not fulfilled</td><td>Directly quantifies the financial impact of C&amp;C failures. Helps prioritise which stores to focus improvement efforts on.</td></tr>
+            <tr><td>Bagged Revenue</td><td>Total revenue value of orders that were successfully bagged and ready for collection</td><td>Measures the positive contribution — how much revenue the store successfully converted through C&amp;C.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 9. SCORES & TIERS -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🏆</span>
+            <span class="guide-acc-title">Scores &amp; Tiers</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">Each store receives a composite score out of 100 based on their weighted KPI performance relative to the rest of the network. Scores are then grouped into four tiers.</p>
+          <div class="tier-grid">
+            <div class="tier-card" style="background:#00a85a22;border:1px solid #00a85a">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#00a85a">A</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:#00a85a;margin-top:2px">TOP TIER</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">Consistently strong across all KPIs. Network leaders.</div>
+            </div>
+            <div class="tier-card" style="background:#3b82f622;border:1px solid #3b82f6">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#3b82f6">B</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3b82f6;margin-top:2px">SOLID</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">Performing well. Minor gaps vs top tier.</div>
+            </div>
+            <div class="tier-card" style="background:#f59e0b22;border:1px solid #f59e0b">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#f59e0b">C</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:#f59e0b;margin-top:2px">DEVELOPING</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">Underperforming in one or more KPIs. Needs support.</div>
+            </div>
+            <div class="tier-card" style="background:#ef444422;border:1px solid #ef4444">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#ef4444">D</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:#ef4444;margin-top:2px">NEEDS ATTENTION</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">Significantly below network. Urgent intervention needed.</div>
+            </div>
+          </div>
+          <div class="gacc-info" style="margin-top:12px">Tier thresholds are configurable in the Settings tab (admin password required). Changes take effect immediately across all views.</div>
+          <div style="margin-top:10px;background:var(--surface2);border-radius:6px;overflow:hidden">
+            <div style="background:var(--surface);padding:8px 12px;border-bottom:1px solid var(--border)">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Admin password — what it unlocks</span>
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+              <tr><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--border);white-space:nowrap;width:160px">Unlock sliders</td><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:8px 12px;border-bottom:1px solid var(--border)">Adjust KPI weights and tier thresholds in the Settings tab</td></tr>
+              <tr><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface2)">Save config</td><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface2)">Lock a scoring configuration against a specific week</td></tr>
+              <tr><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--border)">Delete week</td><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:8px 12px;border-bottom:1px solid var(--border)">Permanently remove a week's data from the database</td></tr>
+              <tr><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);font-weight:700;padding:8px 12px">Delete config</td><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);padding:8px 12px">Remove a saved scoring config from the history panel</td></tr>
+            </table>
+            <div style="padding:10px 12px;border-top:1px solid var(--border);background:var(--surface)">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.5px">ADMIN PASSWORD &nbsp;</span>
+              <code style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--yellow);background:var(--surface2);padding:2px 10px;border-radius:4px;letter-spacing:1px">JDsportsSEA!</code>
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-left:10px">— built into the tool, separate from your Supabase login</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. DELETING -->
+      <div class="guide-acc">
+        <div class="guide-acc-hdr" onclick="this.closest('.guide-acc').classList.toggle('open')">
+          <div class="guide-acc-hdr-left">
+            <span class="guide-acc-icon">🗑️</span>
+            <span class="guide-acc-title">Deleting a week</span>
+          </div>
+          <span class="guide-acc-chevron">▶</span>
+        </div>
+        <div class="guide-acc-body">
+          <p class="gacc-body-intro">If a week was uploaded with incorrect data or the wrong label, you can permanently remove it from the database.</p>
+          <ul class="gacc-ul">
+            <li>Select the incorrect week from the <strong>week dropdown</strong></li>
+            <li>Click the <strong>🗑 Delete week</strong> button next to the dropdown</li>
+            <li>Enter the <strong>admin password</strong> when prompted</li>
+            <li>Confirm the deletion in the confirmation dialog</li>
+            <li>In period mode you can select multiple weeks — each will be deleted with its own password prompt</li>
+          </ul>
+          <div class="gacc-warn">⚠ Deletion is permanent and cannot be undone. The original CSV must be re-uploaded to restore the data.</div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="margin-top:32px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)">JD Sports SEA Fulfilment Hub &nbsp;·&nbsp; Internal Use Only</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)">For access or support, contact your ecommerce operations manager</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <div class="drawer" id="drawer">
   <div class="drawer-header">
     <div><div class="drawer-title" id="drawer-title"></div><div class="drawer-id" id="drawer-id"></div></div>
@@ -920,12 +1333,12 @@ let activeCountry='MY',openDrawerId=null,openDrawerCountry=null;
 
 function switchCountry(c){
   activeCountry=c;
-  var allTabs=['MY','SG','TH','future'];
+  var allTabs=['MY','SG','TH','future','guide'];
   allTabs.forEach(x=>{
     var tab=document.getElementById('ctab-'+x);
     var panel=document.getElementById('cpanel-'+x);
     if(tab)tab.classList.toggle('active',x===c);
-    if(panel)panel.classList.toggle('active',x===c);
+    if(panel){if(x===c){panel.style.display='';panel.classList.add('active');}else{panel.style.display='none';panel.classList.remove('active');}}
   });
   closeDrawer();
 }
