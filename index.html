@@ -1178,100 +1178,114 @@ function switchTab(c,tab,event){
   if(tab==='overall')setTimeout(()=>renderOverall(c),50);
 }
 
-function computeAlerts(c, scoredWeeks, targetWeek) {
-  const allWeeks = getWeekLabels(c), alerts = [];
-  if (allWeeks.length < 2) return alerts;
-  const twIdx = targetWeek ? allWeeks.indexOf(targetWeek) : allWeeks.length - 1;
-  if (twIdx < 1) return alerts;
-  const weeks = allWeeks.slice(0, twIdx + 1);
-  const latestWk = weeks[weeks.length - 1], prevWk = weeks[weeks.length - 2];
-  const allIds = new Set();
-  weeks.forEach(w => { if (scoredWeeks[w]) scoredWeeks[w].forEach(s => allIds.add(s.id)); });
-  const claimedFloor = getClaimedTarget(c);
-  allIds.forEach(id => {
-    const history = weeks.map(w => { const s = scoredWeeks[w] && scoredWeeks[w].find(x => x.id === id); return s ? {week: w, ...s} : null; }).filter(Boolean);
-    if (history.length < 2) return;
-    const name = history[0].name, latest = history[history.length - 1], prev = history[history.length - 2];
-    if (history.length >= 3) { const recent = history.slice(-3); if (recent.every(e => getTier(c, e.score) === 'D')) alerts.push({sev:'high',icon:'🔴',week:latestWk,store:name,id,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'}); }
-    const order = {A:4,B:3,C:2,D:1}, drop = order[getTier(c,prev.score)] - order[getTier(c,latest.score)];
-    if (drop >= 2) alerts.push({sev:'high',icon:'🔴',week:latestWk,store:name,id,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'→'+getTier(c,latest.score)+')'});
-    else if (drop === 1) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'Tier drop: '+getTier(c,prev.score)+' → '+getTier(c,latest.score)});
-    if (prev.score - latest.score > 15 && drop === 0) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
-    if (latest.claimed_pct < claimedFloor) alerts.push({sev:'med',icon:'🟡',week:latestWk,store:name,id,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
-    const rise = order[getTier(c,latest.score)] - order[getTier(c,prev.score)];
-    if (rise >= 1) alerts.push({sev:'low',icon:'🟢',week:latestWk,store:name,id,msg:'Tier improved: '+getTier(c,prev.score)+' → '+getTier(c,latest.score)});
+function computeAlerts(c,scoredWeeks,targetWeek){
+  const allWeeks=getWeekLabels(c),alerts=[];
+  if(allWeeks.length<2)return alerts;
+  const twIdx=targetWeek?allWeeks.indexOf(targetWeek):allWeeks.length-1;
+  if(twIdx<1)return alerts;
+  const weeks=allWeeks.slice(0,twIdx+1);
+  const latestWk=weeks[weeks.length-1],prevWk=weeks[weeks.length-2];
+  const allIds=new Set();
+  weeks.forEach(w=>{if(scoredWeeks[w])scoredWeeks[w].forEach(s=>allIds.add(s.id));});
+  const claimedFloor=getClaimedTarget(c);
+  allIds.forEach(id=>{
+    const history=weeks.map(w=>{const s=scoredWeeks[w]&&scoredWeeks[w].find(x=>x.id===id);return s?{week:w,...s}:null;}).filter(Boolean);
+    if(history.length<2)return;
+    const name=history[0].name,latest=history[history.length-1],prev=history[history.length-2];
+    if(history.length>=3){const recent=history.slice(-3);if(recent.every(e=>getTier(c,e.score)==='D'))alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:name,id,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'});}
+    const order={A:4,B:3,C:2,D:1},drop=order[getTier(c,prev.score)]-order[getTier(c,latest.score)];
+    if(drop>=2)alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:name,id,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'\u2192'+getTier(c,latest.score)+')'});
+    else if(drop===1)alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'Tier drop: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
+    if(prev.score-latest.score>15&&drop===0)alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
+    if(latest.claimed_pct<claimedFloor)alerts.push({sev:'med',icon:'\uD83D\uDFE1',week:latestWk,store:name,id,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
+    const rise=order[getTier(c,latest.score)]-order[getTier(c,prev.score)];
+    if(rise>=1)alerts.push({sev:'low',icon:'\uD83D\uDFE2',week:latestWk,store:name,id,msg:'Tier improved: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
   });
-  const latestIds = new Set((scoredWeeks[latestWk]||[]).map(s => s.id));
-  (scoredWeeks[prevWk]||[]).forEach(s => {
-    if (!latestIds.has(s.id)) alerts.push({sev:'med',icon:'⚠️',week:latestWk,store:s.name,id:s.id,msg:'Missing from '+latestWk+' upload (was present in '+prevWk+')'});
+  const latestIds=new Set((scoredWeeks[latestWk]||[]).map(s=>s.id));
+  (scoredWeeks[prevWk]||[]).forEach(s=>{
+    if(!latestIds.has(s.id))alerts.push({sev:'med',icon:'\u26A0\uFE0F',week:latestWk,store:s.name,id:s.id,msg:'Missing from '+latestWk+' upload (was present in '+prevWk+')'});
   });
-  if (weeks.length >= 3) {
-    const floorThreshold = getNetworkFloor(c);
-    const recentAvgs = weeks.slice(-3).map(w => { const s = scoredWeeks[w]; return s ? s.reduce((a,x)=>a+x.score,0)/s.length : null; }).filter(v => v !== null);
-    if (recentAvgs.length === 3 && recentAvgs.every(avg => avg < floorThreshold))
-      alerts.push({sev:'high',icon:'🔴',week:latestWk,store:'NETWORK',id:'__network__',msg:'Network avg below '+floorThreshold+' for 3+ consecutive weeks ('+recentAvgs.map(v=>v.toFixed(0)).join(', ')+')'});
+  if(weeks.length>=3){
+    const floorThreshold=getNetworkFloor(c);
+    const recentAvgs=weeks.slice(-3).map(w=>{const s=scoredWeeks[w];return s?s.reduce((a,x)=>a+x.score,0)/s.length:null;}).filter(v=>v!==null);
+    if(recentAvgs.length===3&&recentAvgs.every(avg=>avg<floorThreshold)){
+      alerts.push({sev:'high',icon:'\uD83D\uDD34',week:latestWk,store:'NETWORK',id:'__network__',msg:'Network avg below '+floorThreshold+' for 3+ consecutive weeks ('+recentAvgs.map(v=>v.toFixed(0)).join(', ')+')'});
+    }
   }
-  const so = {high:0,med:1,low:2}; alerts.sort((a,b)=>so[a.sev]-so[b.sev]); return alerts;
+  const so={high:0,med:1,low:2};alerts.sort((a,b)=>so[a.sev]-so[b.sev]);return alerts;
 }
 
-function buildAlertLog(c, scoredWeeks) {
-  const weeks = getWeekLabels(c), log = {};
-  weeks.forEach((w, i) => { if (i >= 1) log[w] = computeAlerts(c, scoredWeeks, w); });
+function buildAlertLog(c,scoredWeeks){
+  const weeks=getWeekLabels(c),log={};
+  weeks.forEach(function(w,i){if(i>=1)log[w]=computeAlerts(c,scoredWeeks,w);});
   return log;
 }
 
 function renderAlerts(c){
-  const s=sfx(c), sw=rescoreAll(c), weeks=getWeekLabels(c);
-  const el=document.getElementById('alerts-list'+s);
+  var s=sfx(c),sw=rescoreAll(c),weeks=getWeekLabels(c);
+  var el=document.getElementById('alerts-list'+s);
   if(!el)return;
   if(weeks.length<2){el.innerHTML='<div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div>';return;}
-  const log=buildAlertLog(c,sw);
-  const filterId='alert-week-filter'+s;
-  let filterEl=document.getElementById(filterId);
-  const allWeeksWithAlerts=weeks.slice(1);
+  var log=buildAlertLog(c,sw);
+  var filterId='alert-week-filter-'+c;
+  var filterEl=document.getElementById(filterId);
+  var allWeeksWithAlerts=weeks.slice(1);
   if(!filterEl){
-    const bar=document.createElement('div');
+    var bar=document.createElement('div');
     bar.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;';
-    var _opts=allWeeksWithAlerts.map(function(w){return '<option value="'+w+'">'+w+'</option>';}).join('');bar.innerHTML='<span style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted)">Week:</span>'+'<select id="'+filterId+'" class="filter-select"><option value="all">All weeks</option>'+_opts+'</select>'+'<span id="alert-count-label'+s+'" style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:auto;"></span>';
-    el.parentNode.insertBefore(bar, el);
+    var selHtml='<span style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted)">Week:</span>';
+    selHtml+='<select id="'+filterId+'" class="filter-select"><option value="all">All weeks</option>';
+    allWeeksWithAlerts.forEach(function(w){selHtml+='<option value="'+w+'">'+w+'</option>';});
+    selHtml+='</select>';
+    selHtml+='<span id="alert-count-label-'+c+'" style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:auto;"></span>';
+    bar.innerHTML=selHtml;
+    el.parentNode.insertBefore(bar,el);
     filterEl=document.getElementById(filterId);
     filterEl.addEventListener('change',function(){renderAlerts(c);});
   } else {
-    const current=filterEl.value;
-    filterEl.innerHTML='<option value="all">All weeks</option>'
-      +allWeeksWithAlerts.map(w=>'<option value="'+w+'">'+w+'</option>').join('');
-    filterEl.value=current&&allWeeksWithAlerts.includes(current)?current:'all';
+    var current=filterEl.value;
+    var newOpts='<option value="all">All weeks</option>';
+    allWeeksWithAlerts.forEach(function(w){newOpts+='<option value="'+w+'">'+w+'</option>';});
+    filterEl.innerHTML=newOpts;
+    filterEl.value=(current&&allWeeksWithAlerts.indexOf(current)!==-1)?current:'all';
   }
-  const activeWeek=filterEl.value;
-  let display=[];
+  var activeWeek=filterEl.value;
+  var display=[];
   if(activeWeek==='all'){
-    allWeeksWithAlerts.slice().reverse().forEach(w=>{ const wa=log[w]||[]; if(wa.length) display.push({week:w,alerts:wa}); });
+    allWeeksWithAlerts.slice().reverse().forEach(function(w){var wa=log[w]||[];if(wa.length)display.push({week:w,alerts:wa});});
   } else {
     display=[{week:activeWeek,alerts:log[activeWeek]||[]}];
   }
-  const totalAlerts=display.reduce((a,g)=>a+g.alerts.filter(x=>x.sev!=='low').length,0);
-  const countLbl=document.getElementById('alert-count-label'+s);
-  if(countLbl) countLbl.textContent=totalAlerts+' active alert'+(totalAlerts!==1?'s':'');
-  if(!display.length||display.every(g=>!g.alerts.length)){
+  var totalAlerts=display.reduce(function(a,g){return a+g.alerts.filter(function(x){return x.sev!=='low';}).length;},0);
+  var countLbl=document.getElementById('alert-count-label-'+c);
+  if(countLbl)countLbl.textContent=totalAlerts+' active alert'+(totalAlerts!==1?'s':'');
+  if(!display.length||display.every(function(g){return !g.alerts.length;})){
     el.innerHTML='<div class="empty-state" style="padding:2rem"><p>No alerts for selected week.</p></div>';return;
   }
-  el.innerHTML=display.map(g=>{
-    if(!g.alerts.length) return '<div style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted);padding:8px 0;">'+g.week+' — no alerts</div>';
-    return '<div class="alert-week-group">'
-      +'<div class="alert-week-header">'+g.week+' <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);font-weight:400;">('+g.alerts.filter(a=>a.sev!=='low').length+' high/med)</span></div>'
-      +g.alerts.map(a=>'<div class="alert-item alert-sev-'+a.sev+'" onclick="openDrawer(''+c+'',''+a.id+'')">'
-        +'<span class="alert-icon">'+a.icon+'</span>'
-        +'<div class="alert-body"><div class="alert-store">'+a.store+'</div>'
-        +'<div class="alert-msg">'+a.msg+'</div></div></div>').join('')
-      +'</div>';
-  }).join('');
+  var html='';
+  display.forEach(function(g){
+    if(!g.alerts.length){html+='<div style="font-family:DM Mono,monospace;font-size:11px;color:var(--muted);padding:8px 0;">'+g.week+' — no alerts</div>';return;}
+    html+='<div class="alert-week-group">';
+    html+='<div class="alert-week-header">'+g.week+' <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);font-weight:400;">('+g.alerts.filter(function(a){return a.sev!=='low';}).length+' high/med)</span></div>';
+    g.alerts.forEach(function(a){
+      html+='<div class="alert-item alert-sev-'+a.sev+'" data-cntry="'+c+'" data-sid="'+a.id+'" style="cursor:pointer">';
+      html+='<span class="alert-icon">'+a.icon+'</span>';
+      html+='<div class="alert-body"><div class="alert-store">'+a.store+'</div>';
+      html+='<div class="alert-msg">'+a.msg+'</div></div></div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  el.querySelectorAll('.alert-item[data-sid]').forEach(function(div){
+    div.addEventListener('click',function(){openDrawer(this.dataset.cntry,this.dataset.sid);});
+  });
 }
 
 function updateAlertBadge(c,sw){
-  const weeks=getWeekLabels(c), latestWk=weeks.length?weeks[weeks.length-1]:null;
-  const alerts=latestWk?computeAlerts(c,sw,latestWk):[];
-  const count=alerts.filter(a=>a.sev!=='low').length;
-  const badge=document.getElementById('alert-count-'+c);
+  var weeks=getWeekLabels(c),latestWk=weeks.length?weeks[weeks.length-1]:null;
+  var alerts=latestWk?computeAlerts(c,sw,latestWk):[];
+  var count=alerts.filter(function(a){return a.sev!=='low';}).length;
+  var badge=document.getElementById('alert-count-'+c);
   if(count>0){badge.textContent=count;badge.style.display='inline';}
   else{badge.style.display='none';}
 }
@@ -1833,7 +1847,7 @@ document.addEventListener('DOMContentLoaded',function(){
     // CSV upload
     document.getElementById('csv-input-'+c).addEventListener('change',async function(e){
       const file=e.target.files[0];if(!file)return;
-      if(!_validateSFSFilename(file.name,c)){this.value='';return;}
+      if(!_validateFilename(file.name,'SFS',c)){this.value='';return;}
       const label=document.getElementById('week-label-'+c).value.trim()||('W'+new Date().toISOString().slice(0,10));
       if(state[c].weeklyData.hasOwnProperty(label)){if(!confirm('"'+label+'" exists. Overwrite?')){this.value='';return;}showSync(true);try{await dbDelete('sfs_data','country=eq.'+c+'&week=eq.'+encodeURIComponent(label));}catch(err){alert('Failed: '+err.message);showSync(false);this.value='';return;}}
       const reader=new FileReader();
@@ -1866,7 +1880,7 @@ COUNTRIES.forEach(c=>{
   const s=sfx(c);
   document.getElementById('cnc-csv-input-'+c).addEventListener('change',async function(e){
     const file=e.target.files[0];if(!file)return;
-    if(!_validateCNCFilename(file.name,c)){this.value='';return;}
+    if(!_validateFilename(file.name,'CNC',c)){this.value='';return;}
     const label=document.getElementById('cnc-week-label-'+c).value.trim()||('W'+new Date().toISOString().slice(0,10));
     if(cncState[c].weeklyData.hasOwnProperty(label)){
       if(!confirm('"'+label+'" exists. Overwrite?')){this.value='';return;}
@@ -3129,9 +3143,6 @@ sfsSelectQuarter = function(c, quarter) {
 
 var _origCncSelectQuarter = cncSelectQuarter;
 cncSelectQuarter = function(c, quarter) {
-  document.querySelectorAll('#cpanel-' + c + ' #prog-cnc-' + c + ' .month-btn').forEach(function(btn) {
-    btn.classList.remove('active');
-  });
   _origCncSelectQuarter(c, quarter);
   var qSel = document.getElementById('cnc-quarter-sel-' + c);
   if (qSel) qSel.value = quarter || '';
@@ -3150,59 +3161,51 @@ cncSelectMonth = function(c, month) {
 
 
 
-// ════════════════════════════════════════════════════════
-//  UNDO / DELETE / FILENAME VALIDATION  (v16)
-// ════════════════════════════════════════════════════════
-var _lastUpload = {};
+// ── v16 utilities: validate, undo ────────────────────────────────────────────
+function _validateFilename(filename, prog, c) {
+  var pattern = new RegExp('^' + prog + '_' + c + '_\\d{4}-\\d{2}-\\d{2}\\.csv$', 'i');
+  if (!pattern.test(filename)) {
+    alert('Incorrect filename.\nExpected: ' + prog + '_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
+    return false;
+  }
+  return true;
+}
+
 var _undoTimers = {};
 
 function _showUndoBtn(prog, c, weekLabel) {
-  var key = prog + '_' + c;
   var btnId = 'undo-btn-' + prog + '-' + c;
   var existing = document.getElementById(btnId);
   if (existing) existing.remove();
-  clearTimeout(_undoTimers[key]);
+  clearTimeout(_undoTimers[btnId]);
   var topBar = document.querySelector('#prog-' + prog + '-' + c + ' .top-bar');
   if (!topBar) return;
   var btn = document.createElement('button');
   btn.id = btnId;
   btn.className = 'btn';
-  btn.style.cssText = 'background:#ef4444;color:#fff;font-size:11px;padding:4px 10px;';
-  btn.textContent = '↩ Undo upload (' + weekLabel + ')';
-  btn.onclick = function() { _undoUpload(prog, c, weekLabel); };
+  btn.style.cssText = 'background:#ef4444;color:#fff;font-size:11px;padding:4px 10px;margin-left:8px;';
+  btn.textContent = '\u21a9 Undo upload (' + weekLabel + ')';
+  btn.addEventListener('click', function() { _undoUpload(prog, c, weekLabel); });
   topBar.appendChild(btn);
-  _undoTimers[key] = setTimeout(function() { var b = document.getElementById(btnId); if (b) b.remove(); }, 10 * 60 * 1000);
+  _undoTimers[btnId] = setTimeout(function() {
+    var b = document.getElementById(btnId);
+    if (b) b.remove();
+  }, 10 * 60 * 1000);
 }
 
 async function _undoUpload(prog, c, weekLabel) {
-  if (!confirm('Remove upload for ' + weekLabel + '? This will delete all rows for this week.')) return;
+  if (!confirm('Remove all data for week "' + weekLabel + '" in ' + c + ' ' + prog.toUpperCase() + '?')) return;
   try {
     var table = prog === 'sfs' ? 'sfs_data' : 'cnc_data';
-    var { error } = await window._supabase.from(table).delete().eq('country', c).eq('week', weekLabel);
-    if (error) throw error;
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?country=eq.' + c + '&week=eq.' + encodeURIComponent(weekLabel), {
+      method: 'DELETE', headers: HEADERS
+    });
+    if (!res.ok) throw new Error(await res.text());
     var b = document.getElementById('undo-btn-' + prog + '-' + c);
     if (b) b.remove();
-    alert('Upload for ' + weekLabel + ' removed.');
+    alert('Week ' + weekLabel + ' removed.');
     if (prog === 'sfs') { syncCountry(c); } else { cncSyncCountry(c); }
-  } catch(e) { alert('Error: ' + e.message); }
-}
-
-function _validateSFSFilename(filename, c) {
-  var pattern = new RegExp('^SFS_' + c + '_\\d{4}-\\d{2}-\\d{2}\\.csv$', 'i');
-  if (!pattern.test(filename)) {
-    alert('Incorrect filename.\nExpected: SFS_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
-    return false;
-  }
-  return true;
-}
-
-function _validateCNCFilename(filename, c) {
-  var pattern = new RegExp('^CNC_' + c + '_\\d{4}-\\d{2}-\\d{2}\\.csv$', 'i');
-  if (!pattern.test(filename)) {
-    alert('Incorrect filename.\nExpected: CNC_' + c + '_YYYY-MM-DD.csv\nGot: ' + filename);
-    return false;
-  }
-  return true;
+  } catch(e) { alert('Undo failed: ' + e.message); }
 }
 
 </script>
