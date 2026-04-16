@@ -1002,10 +1002,28 @@ function parseCSV(text){
 }
 
 function checkLabelExists(c){
-  const lbl=document.getElementById('week-label-'+c).value.trim();
-  const exists=lbl&&state[c].weeklyData.hasOwnProperty(lbl);
+  var lbl=document.getElementById('week-label-'+c).value.trim();
+  var validFmt=/^W([1-9]|[1-4][0-9]|5[0-2])\s+\d{4}$/.test(lbl);
+  var exists=lbl&&state[c].weeklyData.hasOwnProperty(lbl);
   document.getElementById('week-label-'+c).classList.toggle('exists',exists);
   document.getElementById('week-label-warn-'+c).classList.toggle('visible',exists);
+  // Show format hint
+  var hintId='week-label-fmt-'+c;
+  var hint=document.getElementById(hintId);
+  if(!hint){
+    hint=document.createElement('span');
+    hint.id=hintId;
+    hint.style.cssText='font-family:DM Mono,monospace;font-size:10px;margin-left:6px;';
+    var inp=document.getElementById('week-label-'+c);
+    if(inp&&inp.parentNode)inp.parentNode.insertBefore(hint,inp.nextSibling);
+  }
+  if(!lbl){hint.textContent='';hint.style.color='';}
+  else if(!validFmt){hint.textContent='Format: W12 2026';hint.style.color='#ef4444';}
+  else{hint.textContent='✓';hint.style.color='#22c55e';}
+  // Disable upload button when label is empty or invalid format
+  var uploadBtn=document.querySelector('#prog-sfs-'+c+' .btn-primary');
+  if(uploadBtn)uploadBtn.disabled=(!lbl||!validFmt);
+  if(uploadBtn)uploadBtn.style.opacity=(!lbl||!validFmt)?'0.4':'1';
 }
 function suggestNextLabel(label){
   const m=label.match(/^W(\d+)(\s+(\d{4}))?/i);
@@ -1388,6 +1406,7 @@ function renderWeeksStrip(c){
       html+='<option value="'+w+'"'+(state[c].selectedWeeks[0]===w?' selected':'')+'>'+w+'</option>';
     });
     html+='</select>';
+    html+='<button class="btn" id="sfs-del-week-btn-'+c+'" style="font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:20px;" title="Delete selected week from database">🗑 Delete week</button>';
   } else {
     html+='<select class="filter-select" id="'+selId+'" multiple style="min-width:140px;border-radius:12px;height:auto;padding:4px 10px;">';
     weeks.forEach(function(w){
@@ -1395,6 +1414,7 @@ function renderWeeksStrip(c){
     });
     html+='</select>';
     html+='<span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:4px;">Ctrl/Cmd+click to multi-select</span>';
+    html+='<button class="btn" id="sfs-del-week-btn-'+c+'" style="font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:20px;" title="Delete selected week from database">🗑 Delete week</button>';
   }
   strip.innerHTML=html;
   var selEl=document.getElementById(selId);
@@ -1403,6 +1423,16 @@ function renderWeeksStrip(c){
       var selected=Array.from(this.selectedOptions).map(function(o){return o.value;});
       state[c].selectedWeeks=selected.length?selected:[weeks[weeks.length-1]];
       renderAll(c);
+    });
+  }
+  var delBtn=document.getElementById('sfs-del-week-btn-'+c);
+  if(delBtn){
+    delBtn.addEventListener('click',function(e){
+      var sel=document.getElementById(selId);
+      if(!sel)return;
+      var toDelete=Array.from(sel.selectedOptions).map(function(o){return o.value;});
+      if(!toDelete.length)return;
+      toDelete.forEach(function(lbl){deleteWeek(c,lbl,e);});
     });
   }
   var hint=document.getElementById('period-hint-'+c);
@@ -1877,7 +1907,6 @@ document.addEventListener('DOMContentLoaded',function(){
     // CSV upload
     document.getElementById('csv-input-'+c).addEventListener('change',async function(e){
       const file=e.target.files[0];if(!file)return;
-      if(!_validateFilename(file.name,'SFS',c)){this.value='';return;}
       const label=document.getElementById('week-label-'+c).value.trim()||('W'+new Date().toISOString().slice(0,10));
       if(state[c].weeklyData.hasOwnProperty(label)){if(!confirm('"'+label+'" exists. Overwrite?')){this.value='';return;}showSync(true);try{await dbDelete('sfs_data','country=eq.'+c+'&week=eq.'+encodeURIComponent(label));}catch(err){alert('Failed: '+err.message);showSync(false);this.value='';return;}}
       const reader=new FileReader();
@@ -1910,7 +1939,6 @@ COUNTRIES.forEach(c=>{
   const s=sfx(c);
   document.getElementById('cnc-csv-input-'+c).addEventListener('change',async function(e){
     const file=e.target.files[0];if(!file)return;
-    if(!_validateFilename(file.name,'CNC',c)){this.value='';return;}
     const label=document.getElementById('cnc-week-label-'+c).value.trim()||('W'+new Date().toISOString().slice(0,10));
     if(cncState[c].weeklyData.hasOwnProperty(label)){
       if(!confirm('"'+label+'" exists. Overwrite?')){this.value='';return;}
@@ -2151,10 +2179,26 @@ function parseCncCSV(text) {
 
 // ── C&C Upload ────────────────────────────────────────────────────────────────
 function cncCheckLabelExists(c) {
-  const lbl = document.getElementById('cnc-week-label-' + c).value.trim();
-  const exists = lbl && cncState[c].weeklyData.hasOwnProperty(lbl);
-  document.getElementById('cnc-week-label-' + c).classList.toggle('exists', exists);
-  document.getElementById('cnc-week-label-warn-' + c).classList.toggle('visible', exists);
+  var lbl=document.getElementById('cnc-week-label-'+c).value.trim();
+  var validFmt=/^W([1-9]|[1-4][0-9]|5[0-2])\s+\d{4}$/.test(lbl);
+  var exists=lbl&&cncState[c].weeklyData.hasOwnProperty(lbl);
+  document.getElementById('cnc-week-label-'+c).classList.toggle('exists',exists);
+  document.getElementById('cnc-week-label-warn-'+c).classList.toggle('visible',exists);
+  var hintId='cnc-week-label-fmt-'+c;
+  var hint=document.getElementById(hintId);
+  if(!hint){
+    hint=document.createElement('span');
+    hint.id=hintId;
+    hint.style.cssText='font-family:DM Mono,monospace;font-size:10px;margin-left:6px;';
+    var inp=document.getElementById('cnc-week-label-'+c);
+    if(inp&&inp.parentNode)inp.parentNode.insertBefore(hint,inp.nextSibling);
+  }
+  if(!lbl){hint.textContent='';hint.style.color='';}
+  else if(!validFmt){hint.textContent='Format: W12 2026';hint.style.color='#ef4444';}
+  else{hint.textContent='✓';hint.style.color='#22c55e';}
+  var uploadBtn=document.querySelector('#prog-cnc-'+c+' .btn-primary');
+  if(uploadBtn)uploadBtn.disabled=(!lbl||!validFmt);
+  if(uploadBtn)uploadBtn.style.opacity=(!lbl||!validFmt)?'0.4':'1';
 }
 
 async function cncDeleteWeek(c, label, e) {
@@ -2290,6 +2334,7 @@ function cncRenderWeeksStrip(c) {
       html+='<option value="'+w+'"'+(cncState[c].selectedWeeks[0]===w?' selected':'')+'>'+w+'</option>';
     });
     html+='</select>';
+    html+='<button class="btn" id="cnc-del-week-btn-'+c+'" style="font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:20px;" title="Delete selected week from database">🗑 Delete week</button>';
   } else {
     html+='<select class="filter-select" id="'+selId+'" multiple style="min-width:140px;border-radius:12px;height:auto;padding:4px 10px;">';
     weeks.forEach(function(w){
@@ -2297,6 +2342,7 @@ function cncRenderWeeksStrip(c) {
     });
     html+='</select>';
     html+='<span style="font-family:DM Mono,monospace;font-size:10px;color:var(--muted);margin-left:4px;">Ctrl/Cmd+click to multi-select</span>';
+    html+='<button class="btn" id="cnc-del-week-btn-'+c+'" style="font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:20px;" title="Delete selected week from database">🗑 Delete week</button>';
   }
   strip.innerHTML=html;
   var selEl=document.getElementById(selId);
@@ -2305,6 +2351,16 @@ function cncRenderWeeksStrip(c) {
       var selected=Array.from(this.selectedOptions).map(function(o){return o.value;});
       cncState[c].selectedWeeks=selected.length?selected:[weeks[weeks.length-1]];
       cncRenderAll(c);
+    });
+  }
+  var delBtn=document.getElementById('cnc-del-week-btn-'+c);
+  if(delBtn){
+    delBtn.addEventListener('click',function(e){
+      var sel=document.getElementById(selId);
+      if(!sel)return;
+      var toDelete=Array.from(sel.selectedOptions).map(function(o){return o.value;});
+      if(!toDelete.length)return;
+      toDelete.forEach(function(lbl){cncDeleteWeek(c,lbl,e);});
     });
   }
 }
