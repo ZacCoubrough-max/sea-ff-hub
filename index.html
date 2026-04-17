@@ -416,7 +416,19 @@
       <div id="tab-stores"><div id="main-content"><div class="empty-state"><h2>Loading</h2><p>Connecting to database...</p></div></div></div>
       <div id="tab-health" style="display:none"><div class="panel" style="margin-bottom:1rem"><div class="panel-title">Network avg score</div><div id="health-svg-wrap" style="padding:0.5rem 0"></div></div></div>
       <div id="tab-movers" style="display:none"><div class="movers-grid"><div class="panel"><div class="panel-title" style="color:var(--green)">Most improved</div><div id="movers-up"></div></div><div class="panel"><div class="panel-title" style="color:var(--red)">Most declined</div><div id="movers-dn"></div></div></div></div>
-      <div id="tab-alerts" style="display:none"><div class="panel"><div class="panel-title">Active alerts</div><div id="alerts-list"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div></div></div>
+      <div id="tab-alerts" style="display:none"><div class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <div class="panel-title" style="margin-bottom:0">Active alerts</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#666">Week</span>
+      <select id="alerts-week-filter" onchange="renderAlerts('MY')" style="font-family:'DM Mono',monospace;font-size:11px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:5px 10px;color:#fff;outline:none;cursor:pointer;transition:border-color .2s" onfocus="this.style.borderColor='#FFE600'" onblur="this.style.borderColor='#2a2a2a'">
+        <option value="all">All weeks</option>
+      </select>
+      <span id="alerts-counts" style="font-family:'DM Mono',monospace;font-size:10px;color:#666"></span>
+    </div>
+  </div>
+  <div id="alerts-list"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div>
+</div></div>
       <div id="tab-overall" style="display:none"><div id="overall-content"><div class="empty-state"><h2>Loading</h2></div></div></div>
     </div>
       </div>
@@ -585,7 +597,19 @@
       <div id="tab-stores-SG"><div id="main-content-SG"><div class="empty-state"><h2>Loading</h2><p>Connecting to database...</p></div></div></div>
       <div id="tab-health-SG" style="display:none"><div class="panel" style="margin-bottom:1rem"><div class="panel-title">Network avg score</div><div id="health-svg-wrap-SG" style="padding:0.5rem 0"></div></div></div>
       <div id="tab-movers-SG" style="display:none"><div class="movers-grid"><div class="panel"><div class="panel-title" style="color:var(--green)">Most improved</div><div id="movers-up-SG"></div></div><div class="panel"><div class="panel-title" style="color:var(--red)">Most declined</div><div id="movers-dn-SG"></div></div></div></div>
-      <div id="tab-alerts-SG" style="display:none"><div class="panel"><div class="panel-title">Active alerts</div><div id="alerts-list-SG"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div></div></div>
+      <div id="tab-alerts-SG" style="display:none"><div class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <div class="panel-title" style="margin-bottom:0">Active alerts</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#666">Week</span>
+      <select id="alerts-week-filter-SG" onchange="renderAlerts('SG')" style="font-family:'DM Mono',monospace;font-size:11px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:5px 10px;color:#fff;outline:none;cursor:pointer;transition:border-color .2s" onfocus="this.style.borderColor='#FFE600'" onblur="this.style.borderColor='#2a2a2a'">
+        <option value="all">All weeks</option>
+      </select>
+      <span id="alerts-counts-SG" style="font-family:'DM Mono',monospace;font-size:10px;color:#666"></span>
+    </div>
+  </div>
+  <div id="alerts-list-SG"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div>
+</div></div>
       <div id="tab-overall-SG" style="display:none"><div id="overall-content-SG"><div class="empty-state"><h2>Loading</h2></div></div></div>
     </div>
       </div>
@@ -754,7 +778,19 @@
       <div id="tab-stores-TH"><div id="main-content-TH"><div class="empty-state"><h2>Loading</h2><p>Connecting to database...</p></div></div></div>
       <div id="tab-health-TH" style="display:none"><div class="panel" style="margin-bottom:1rem"><div class="panel-title">Network avg score</div><div id="health-svg-wrap-TH" style="padding:0.5rem 0"></div></div></div>
       <div id="tab-movers-TH" style="display:none"><div class="movers-grid"><div class="panel"><div class="panel-title" style="color:var(--green)">Most improved</div><div id="movers-up-TH"></div></div><div class="panel"><div class="panel-title" style="color:var(--red)">Most declined</div><div id="movers-dn-TH"></div></div></div></div>
-      <div id="tab-alerts-TH" style="display:none"><div class="panel"><div class="panel-title">Active alerts</div><div id="alerts-list-TH"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div></div></div>
+      <div id="tab-alerts-TH" style="display:none"><div class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <div class="panel-title" style="margin-bottom:0">Active alerts</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#666">Week</span>
+      <select id="alerts-week-filter-TH" onchange="renderAlerts('TH')" style="font-family:'DM Mono',monospace;font-size:11px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:5px 10px;color:#fff;outline:none;cursor:pointer;transition:border-color .2s" onfocus="this.style.borderColor='#FFE600'" onblur="this.style.borderColor='#2a2a2a'">
+        <option value="all">All weeks</option>
+      </select>
+      <span id="alerts-counts-TH" style="font-family:'DM Mono',monospace;font-size:10px;color:#666"></span>
+    </div>
+  </div>
+  <div id="alerts-list-TH"><div class="empty-state" style="padding:2rem"><p>Load at least 2 weeks to enable alerts.</p></div></div>
+</div></div>
       <div id="tab-overall-TH" style="display:none"><div id="overall-content-TH"><div class="empty-state"><h2>Loading</h2></div></div></div>
     </div>
       </div>
@@ -1831,15 +1867,15 @@ function computeAlerts(c,scoredWeeks){
   allIds.forEach(id=>{
     const history=weeks.map(w=>{const s=scoredWeeks[w]&&scoredWeeks[w].find(x=>x.id===id);return s?{week:w,...s}:null;}).filter(Boolean);
     if(history.length<2)return;
-    const name=history[0].name,latest=history[history.length-1],prev=history[history.length-2];
-    if(history.length>=3){const recent=history.slice(-3);if(recent.every(e=>getTier(c,e.score)==='D'))alerts.push({sev:'high',icon:'\uD83D\uDD34',store:name,id,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'});}
+    const name=history[0].name,latest=history[history.length-1],prev=history[history.length-2],latestTier=getTier(c,latest.score),latestScore=latest.score.toFixed(0);
+    if(history.length>=3){const recent=history.slice(-3);if(recent.every(e=>getTier(c,e.score)==='D'))alerts.push({sev:'high',icon:'\uD83D\uDD34',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'D-tier for '+history.filter(e=>getTier(c,e.score)==='D').length+' consecutive weeks'});}
     const order={A:4,B:3,C:2,D:1},drop=order[getTier(c,prev.score)]-order[getTier(c,latest.score)];
-    if(drop>=2)alerts.push({sev:'high',icon:'\uD83D\uDD34',store:name,id,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'\u2192'+getTier(c,latest.score)+')'});
-    else if(drop===1)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,msg:'Tier drop: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
-    if(prev.score-latest.score>15&&drop===0)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
-    if(latest.claimed_pct<claimedFloor)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
+    if(drop>=2)alerts.push({sev:'high',icon:'\uD83D\uDD34',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'Dropped '+drop+' tiers ('+getTier(c,prev.score)+'\u2192'+getTier(c,latest.score)+')'});
+    else if(drop===1)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'Tier drop: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
+    if(prev.score-latest.score>15&&drop===0)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'Score fell '+(prev.score-latest.score).toFixed(0)+' pts'});
+    if(latest.claimed_pct<claimedFloor)alerts.push({sev:'med',icon:'\uD83D\uDFE1',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'% claimed below target: '+latest.claimed_pct.toFixed(1)+'% (target: '+claimedFloor+'%)'});
     const rise=order[getTier(c,latest.score)]-order[getTier(c,prev.score)];
-    if(rise>=1)alerts.push({sev:'low',icon:'\uD83D\uDFE2',store:name,id,msg:'Tier improved: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
+    if(rise>=1)alerts.push({sev:'low',icon:'\uD83D\uDFE2',store:name,id,week:latest.week,score:latestScore,tier:latestTier,msg:'Tier improved: '+getTier(c,prev.score)+' \u2192 '+getTier(c,latest.score)});
   });
   // Missing store alert — store present in previous week but absent from latest
   if(weeks.length>=2){
@@ -1865,15 +1901,127 @@ function computeAlerts(c,scoredWeeks){
 }
 
 function renderAlerts(c){
-  const s=sfx(c),sw=rescoreAll(c),alerts=computeAlerts(c,sw);
+  const s=sfx(c),sw=rescoreAll(c),allAlerts=computeAlerts(c,sw);
   const el=document.getElementById('alerts-list'+s);
+  const filterEl=document.getElementById('alerts-week-filter'+s);
+  const countsEl=document.getElementById('alerts-counts'+s);
   if(!el)return;
-  if(!alerts.length){el.innerHTML='<div class="empty-state" style="padding:2rem"><p>No alerts. Load at least 2 weeks.</p></div>';return;}
-  el.innerHTML=alerts.map(a=>'<div class="alert-item alert-sev-'+a.sev+'" onclick="openDrawer(\''+c+'\',\''+a.id+'\')"><span class="alert-icon">'+a.icon+'</span><div class="alert-body"><div class="alert-store">'+a.store+'</div><div class="alert-msg">'+a.msg+'</div></div></div>').join('');
+
+  // Acknowledged alerts stored in localStorage per country
+  const ackKey='sfs_ack_'+c;
+  const acked=JSON.parse(localStorage.getItem(ackKey)||'{}');
+
+  // Populate week dropdown — default to latest week
+  const weeks=[...new Set(allAlerts.map(a=>a.week))].sort((a,b)=>b.localeCompare(a));
+  if(filterEl){
+    const currentVal=filterEl.value||'__latest__';
+    const latestWeek=weeks[0]||'all';
+    const useVal=(currentVal==='__latest__')?latestWeek:currentVal;
+    filterEl.innerHTML='<option value="all">All weeks</option>'
+      +weeks.map(w=>'<option value="'+w+'"'+(w===useVal?' selected':'')+'>'+w+'</option>').join('');
+  }
+
+  const selectedWeek=filterEl?filterEl.value:'all';
+  const baseFiltered=selectedWeek==='all'?allAlerts:allAlerts.filter(a=>a.week===selectedWeek);
+
+  // Separate acked from active
+  const active=baseFiltered.filter(a=>!acked[a.week+'|'+a.id+'|'+a.msg]);
+  const acknowledged=baseFiltered.filter(a=>acked[a.week+'|'+a.id+'|'+a.msg]);
+
+  // Counts badge
+  if(countsEl){
+    const hi=active.filter(a=>a.sev==='high').length;
+    const med=active.filter(a=>a.sev==='med').length;
+    const lo=active.filter(a=>a.sev==='low').length;
+    const ackCount=acknowledged.length;
+    countsEl.innerHTML=
+      (hi?'<span style="color:#ff5252;font-weight:700">'+hi+' high</span> ':'')
+      +(med?'<span style="color:#FFE000"> '+med+' med</span> ':'')
+      +(lo?'<span style="color:#69ffb4"> '+lo+' ok</span> ':'')
+      +(ackCount?'<span style="color:#444"> · '+ackCount+' known</span>':'');
+  }
+
+  if(!allAlerts.length){
+    el.innerHTML='<div class="empty-state" style="padding:2rem"><p>No alerts. Load at least 2 weeks.</p></div>';
+    return;
+  }
+
+  // Tier colour helper
+  function tierCol(t){return t==='A'?'#69ffb4':t==='B'?'#4f8ef7':t==='C'?'#FFE000':'#ff5252';}
+
+  // Render a single alert card
+  function alertCard(a){
+    const ackId=a.week+'|'+a.id+'|'+a.msg;
+    const isAcked=!!acked[ackId];
+    const weekPill='<span style="font-size:9px;padding:2px 6px;border-radius:8px;background:#2a2a2a;color:#666;margin-left:6px;font-family:'DM Mono',monospace">'+a.week+'</span>';
+    const tierBadge=a.tier?'<span style="font-size:9px;padding:2px 6px;border-radius:4px;background:'+tierCol(a.tier)+'22;color:'+tierCol(a.tier)+';font-weight:800;margin-left:6px">'+a.tier+' · '+a.score+'</span>':'';
+    const ackBtn='<button onclick="event.stopPropagation();acknowledgeAlert(''+c+'',''+ackId+'')" '
+      +'style="margin-left:auto;flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.5px;padding:3px 9px;border-radius:4px;border:1px solid '+(isAcked?'#333':'#2a2a2a')+';background:transparent;color:'+(isAcked?'#444':'#555')+';cursor:pointer;transition:all .2s;white-space:nowrap" '
+      +'onmouseover="this.style.borderColor=''+(isAcked?'#FFE600':'#69ffb4')+'';this.style.color=''+(isAcked?'#FFE600':'#69ffb4')+'';" '
+      +'onmouseout="this.style.borderColor=''+(isAcked?'#333':'#2a2a2a')+'';this.style.color=''+(isAcked?'#444':'#555')+'';">'
+      +(isAcked?'↩ Unmark':'✓ Mark known')+'</button>';
+    return '<div class="alert-item alert-sev-'+a.sev+(isAcked?' alert-acked':'')+'" style="'+(isAcked?'opacity:0.45;':'')+'display:flex;align-items:center;" onclick="openDrawer(''+c+'',''+a.id+'')">'
+      +'<span class="alert-icon">'+a.icon+'</span>'
+      +'<div class="alert-body" style="flex:1;min-width:0">'
+      +'<div class="alert-store" style="display:flex;align-items:center;flex-wrap:wrap">'+a.store+weekPill+tierBadge+'</div>'
+      +'<div class="alert-msg">'+a.msg+'</div>'
+      +'</div>'
+      +ackBtn
+      +'</div>';
+  }
+
+  // Group active alerts by severity
+  const sevOrder=['high','med','low'];
+  const sevLabels={high:'🔴 High priority',med:'🟡 Medium priority',low:'🟢 Improving'};
+  let html='';
+
+  sevOrder.forEach(sev=>{
+    const group=active.filter(a=>a.sev===sev);
+    if(!group.length)return;
+    html+='<div style="margin-bottom:16px">'
+      +'<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #2a2a2a">'
+      +sevLabels[sev]+' <span style="color:#444">('+group.length+')</span></div>'
+      +group.map(alertCard).join('')
+      +'</div>';
+  });
+
+  // Acknowledged section (collapsed by default)
+  if(acknowledged.length){
+    html+='<div style="margin-top:8px">'
+      +'<div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.ack-chev').textContent=this.nextElementSibling.style.display==='none'?'▸':'▾'" '
+      +'style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#444;margin-bottom:6px;cursor:pointer;display:flex;align-items:center;gap:6px">'
+      +'<span class="ack-chev">▸</span> Known / acknowledged ('+acknowledged.length+')</div>'
+      +'<div style="display:none">'+acknowledged.map(alertCard).join('')+'</div>'
+      +'</div>';
+  }
+
+  if(!active.length&&!acknowledged.length){
+    html='<div class="empty-state" style="padding:2rem"><p>No alerts for this week.</p></div>';
+  } else if(!active.length){
+    html='<div style="font-family:'DM Mono',monospace;font-size:11px;color:#69ffb4;padding:12px 0;margin-bottom:8px">✓ All alerts acknowledged for this week</div>'+html;
+  }
+
+  el.innerHTML=html;
+}
+
+
+function acknowledgeAlert(c, ackId){
+  const ackKey='sfs_ack_'+c;
+  const acked=JSON.parse(localStorage.getItem(ackKey)||'{}');
+  if(acked[ackId]){
+    delete acked[ackId];
+  } else {
+    acked[ackId]=Date.now();
+  }
+  localStorage.setItem(ackKey, JSON.stringify(acked));
+  renderAlerts(c);
 }
 
 function updateAlertBadge(c,sw){
-  const alerts=computeAlerts(c,sw),count=alerts.filter(a=>a.sev!=='low').length;
+  const alerts=computeAlerts(c,sw);
+  const ackKey='sfs_ack_'+c;
+  const acked=JSON.parse(localStorage.getItem(ackKey)||'{}');
+  const count=alerts.filter(a=>a.sev!=='low'&&!acked[a.week+'|'+a.id+'|'+a.msg]).length;
   const badge=document.getElementById('alert-count-'+c);
   if(count>0){badge.textContent=count;badge.style.display='inline';}
   else{badge.style.display='none';}
