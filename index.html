@@ -184,22 +184,22 @@
   /* ── Drawer ───────────────────────────────────────────────── */
   .drawer-overlay{position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:200;display:none;backdrop-filter:blur(4px);}
   .drawer-overlay.open{display:block;}
-  .drawer{position:fixed;right:0;top:0;height:100%;width:420px;background:var(--surface);border-left:1px solid var(--border);z-index:300;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+  .drawer{position:fixed;right:0;top:0;height:100%;width:680px;background:var(--surface);border-left:1px solid var(--border);z-index:300;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
   .drawer.open{transform:translateX(0);}
-  .drawer-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 24px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1;}
-  .drawer-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;text-transform:uppercase;color:var(--yellow);letter-spacing:0.5px;}
+  .drawer-header{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 32px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1;}
+  .drawer-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;color:var(--yellow);letter-spacing:0.5px;}
   .drawer-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;}
   .drawer-close{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:14px;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
   .drawer-close:hover{border-color:var(--red);color:var(--red);}
-  #drawer-body{padding:20px 24px;}
+  #drawer-body{padding:24px 32px;}
   .drawer-section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin:18px 0 10px;font-family:'DM Mono',monospace;}
-  .kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px;}
-  .kpi-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;transition:border-color .2s;}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:4px;}
+  .kpi-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;transition:border-color .2s;}
   .kpi-card:hover{border-color:var(--yellow);}
   .kpi-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-  .kpi-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+  .kpi-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.5px;}
   .kpi-delta{font-size:10px;margin-top:2px;}
-  .chart-wrap{height:160px;margin:8px 0;}
+  .chart-wrap{height:220px;margin:8px 0;}
   .note-area{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border-color .2s;}
   .note-area:focus{border-color:var(--yellow);}
   .note-saved{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);margin-top:4px;display:none;}
@@ -355,7 +355,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="sfs-quarter-select-MY" onchange="sfsSelectQuarter('MY',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="sfs-month-select-MY" onchange="sfsSelectMonth('MY',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-MY" onchange="sfsSelectWeekFromDropdown('MY',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-MY" onchange="sfsSelectWeekFromDropdown('MY',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="sfs-delete-week-btn-MY" onclick="var w=document.getElementById('sfs-week-select-MY').value;if(!w){alert('Select a week first.');return;}deleteWeek('MY',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="weeks-strip-MY" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -438,7 +438,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="cnc-quarter-select-MY" onchange="cncSelectQuarter('MY',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="cnc-month-select-MY" onchange="cncSelectMonth('MY',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-MY" onchange="cncSelectWeekFromDropdown('MY',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-MY" onchange="cncSelectWeekFromDropdown('MY',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="cnc-delete-week-btn-MY" onclick="var w=document.getElementById('cnc-week-select-MY').value;if(!w){alert('Select a week first.');return;}cncDeleteWeek('MY',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="cnc-weeks-strip-MY" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -524,7 +524,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="sfs-quarter-select-SG" onchange="sfsSelectQuarter('SG',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="sfs-month-select-SG" onchange="sfsSelectMonth('SG',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-SG" onchange="sfsSelectWeekFromDropdown('SG',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-SG" onchange="sfsSelectWeekFromDropdown('SG',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="sfs-delete-week-btn-SG" onclick="var w=document.getElementById('sfs-week-select-SG').value;if(!w){alert('Select a week first.');return;}deleteWeek('SG',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="weeks-strip-SG" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -607,7 +607,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="cnc-quarter-select-SG" onchange="cncSelectQuarter('SG',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="cnc-month-select-SG" onchange="cncSelectMonth('SG',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-SG" onchange="cncSelectWeekFromDropdown('SG',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-SG" onchange="cncSelectWeekFromDropdown('SG',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="cnc-delete-week-btn-SG" onclick="var w=document.getElementById('cnc-week-select-SG').value;if(!w){alert('Select a week first.');return;}cncDeleteWeek('SG',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="cnc-weeks-strip-SG" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -693,7 +693,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="sfs-quarter-select-TH" onchange="sfsSelectQuarter('TH',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="sfs-month-select-TH" onchange="sfsSelectMonth('TH',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-TH" onchange="sfsSelectWeekFromDropdown('TH',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="sfs-week-select-TH" onchange="sfsSelectWeekFromDropdown('TH',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="sfs-delete-week-btn-TH" onclick="var w=document.getElementById('sfs-week-select-TH').value;if(!w){alert('Select a week first.');return;}deleteWeek('TH',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="weeks-strip-TH" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -776,7 +776,7 @@
   <div class="filter-dropdowns-row">
     <div class="filter-dropdown-group"><label class="filter-label">Quarter</label><select class="filter-select" id="cnc-quarter-select-TH" onchange="cncSelectQuarter('TH',this.value)"><option value="">All</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
     <div class="filter-dropdown-group"><label class="filter-label">Month</label><select class="filter-select" id="cnc-month-select-TH" onchange="cncSelectMonth('TH',this.value)"><option value="">All</option><option value="Feb">Feb</option><option value="Mar">Mar</option><option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option><option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option><option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option><option value="Jan">Jan</option></select></div>
-    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-TH" onchange="cncSelectWeekFromDropdown('TH',this.value)"><option value="">Loading...</option></select></div>
+    <div class="filter-dropdown-group"><label class="filter-label">Week</label><select class="filter-select" id="cnc-week-select-TH" onchange="cncSelectWeekFromDropdown('TH',this.value)"><option value="">Loading...</option></select></div><button class="btn" id="cnc-delete-week-btn-TH" onclick="var w=document.getElementById('cnc-week-select-TH').value;if(!w){alert('Select a week first.');return;}cncDeleteWeek('TH',w,event)" style="font-size:10px;padding:5px 10px;border-color:var(--red);color:var(--red);display:none;margin-left:4px">&#128465; Delete week</button>
   </div>
       <div class="weeks-strip-row" id="cnc-weeks-strip-TH" style="display:none"><span class="weeks-strip-label">Weeks:</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">Loading...</span></div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -2055,6 +2055,9 @@ function renderWeeksStrip(c){
   const weeks=getWeekLabels(c),strip=document.getElementById('weeks-strip-'+c),badge=document.getElementById('week-count-badge-'+c);
   if(!weeks.length){strip.innerHTML='<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>';badge.textContent=c+' \u2014 0 WEEKS';return;}
   badge.textContent=c+' \u2014 '+weeks.length+' WEEK'+(weeks.length!==1?'S':'');
+  var _sdb2=document.getElementById('sfs-delete-week-btn-'+c);
+  var _sds2=document.getElementById('sfs-week-select-'+c);
+  if(_sdb2)_sdb2.style.display=(_sds2&&_sds2.value)?'inline-flex':'none';
   const pp=state[c].mode==='period'?getPriorPeriod(c,state[c].selectedWeeks):[];
   let html='<span class="weeks-strip-label">Weeks:</span>';
   weeks.forEach(w=>{const inA=state[c].selectedWeeks.includes(w),inB=pp.includes(w),cls=inA?'in-period-a':inB?'in-period-b':'';html+='<div class="week-chip '+cls+'" data-week="'+w.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" data-country="'+c+'" data-action="chip"><span class="chip-lbl" style="pointer-events:none">'+w+'</span><span class="del" data-action="del" style="cursor:pointer;padding:0 2px;color:var(--muted)">\u2715</span></div>';});
@@ -2928,6 +2931,9 @@ function cncRenderWeeksStrip(c) {
   const badge = document.getElementById('cnc-week-count-badge-' + c);
   if (!weeks.length) { strip.innerHTML = '<span class="weeks-strip-label">Weeks:</span><span style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--muted)">No weeks loaded</span>'; badge.textContent = c + ' C&C \u2014 0 WEEKS'; return; }
   badge.textContent = c + ' C&C \u2014 ' + weeks.length + ' WEEK' + (weeks.length !== 1 ? 'S' : '');
+  var _cdb2=document.getElementById('cnc-delete-week-btn-'+c);
+  var _cds2=document.getElementById('cnc-week-select-'+c);
+  if(_cdb2)_cdb2.style.display=(_cds2&&_cds2.value)?'inline-flex':'none';
   const pp = cncState[c].mode === 'period' ? cncGetPriorPeriod(c, cncState[c].selectedWeeks) : [];
   let html = '<span class="weeks-strip-label">Weeks:</span>';
   weeks.forEach(w => { const inA = cncState[c].selectedWeeks.includes(w), inB = pp.includes(w), cls = inA ? 'in-period-a' : inB ? 'in-period-b' : ''; html += '<div class="week-chip ' + cls + '" data-week="' + w.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '" data-country="' + c + '" data-prog="cnc" data-action="chip"><span class="chip-lbl" style="pointer-events:none">' + w + '</span><span class="del" data-action="del" style="cursor:pointer;padding:0 2px;color:var(--muted)">\u2715</span></div>'; });
@@ -3833,141 +3839,99 @@ function _guideSection(icon, title, bodyHtml) {
 
 function exportGuidePDF() {
   var dateStr = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  var sections = document.querySelectorAll('#cpanel-guide .guide-acc');
+  var sectionsHtml = '';
+  sections.forEach(function(sec) {
+    var titleEl = sec.querySelector('.guide-acc-title');
+    var iconEl  = sec.querySelector('.guide-acc-icon');
+    var bodyEl  = sec.querySelector('.guide-acc-body');
+    if (!titleEl || !bodyEl) return;
+    var icon  = iconEl  ? iconEl.textContent  : '';
+    var title = titleEl ? titleEl.textContent : '';
+    var bodyClone = bodyEl.cloneNode(true);
+    bodyClone.style.display = 'block';
+    bodyClone.querySelectorAll('input,button,select,textarea').forEach(function(el){ el.remove(); });
+    sectionsHtml +=
+      '<div class="g-section">'
+      + '<div class="g-sec-hdr"><span class="g-sec-icon">' + icon + '</span><span class="g-sec-title">' + title + '</span></div>'
+      + '<div class="g-sec-body">' + bodyClone.innerHTML + '</div>'
+      + '</div>';
+  });
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
-    + '<title>JD Sports SEA Fulfilment Hub &mdash; Guide</title>'
+    + '<title>JD Sports SEA Fulfilment Hub \u2014 Guide</title>'
     + '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">'
     + '<style>'
     + '*{box-sizing:border-box;margin:0;padding:0;}'
-    + 'body{font-family:"DM Mono",monospace;font-size:12px;color:#1a1a1a;background:#fff;padding:32px 40px;max-width:820px;margin:0 auto;}'
+    + 'body{font-family:"DM Mono",monospace;font-size:12px;color:#1a1a1a;background:#fff;padding:32px 40px;max-width:860px;margin:0 auto;}'
     + 'h1{font-family:"Syne",sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}'
-    + '.subtitle{font-size:10px;color:#888;letter-spacing:1px;margin-bottom:0;}'
+    + '.subtitle{font-size:10px;color:#888;letter-spacing:1px;}'
     + '.yellow-rule{height:3px;background:#FFE600;margin:16px 0 24px;}'
-    + '.g-section{margin-bottom:16px;border:1px solid #e5e5e5;border-radius:6px;overflow:hidden;page-break-inside:avoid;}'
+    + '.g-section{margin-bottom:14px;border:1px solid #e5e5e5;border-radius:6px;overflow:hidden;page-break-inside:avoid;}'
     + '.g-sec-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8f8f8;border-bottom:1px solid #e5e5e5;}'
+    + '.g-sec-icon{font-size:16px;}'
     + '.g-sec-title{font-family:"Syne",sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}'
-    + '.g-sec-body{padding:12px 14px;font-size:11px;line-height:1.7;color:#333;}'
+    + '.g-sec-body{padding:14px 16px;font-size:11px;line-height:1.7;color:#333;}'
+    + '.g-sec-body *{color:inherit;}'
     + 'table{width:100%;border-collapse:collapse;font-size:10px;margin-top:8px;}'
     + 'thead th{background:#1a1a1a;color:#fff;padding:5px 8px;text-align:left;font-size:9px;letter-spacing:0.8px;text-transform:uppercase;font-weight:700;}'
-    + 'tbody td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.5;}'
+    + 'tbody td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.5;color:#333;}'
     + 'tbody tr:nth-child(odd) td{background:#fafafa;}'
     + 'tbody td:first-child{color:#7a5c00;font-weight:700;white-space:nowrap;}'
-    + '.info-box{background:#fffbf0;border-left:3px solid #FFE600;padding:8px 12px;border-radius:0 4px 4px 0;margin-top:8px;font-size:10.5px;line-height:1.6;}'
-    + '.warn-box{background:#fff0f0;border-left:3px solid #ef4444;padding:8px 12px;border-radius:0 4px 4px 0;margin-top:8px;font-size:10.5px;line-height:1.6;}'
-    + '.tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}'
-    + '.tier-card{padding:8px 6px;border-radius:4px;text-align:center;}'
-    + '.step-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0;}'
-    + '.step-card{background:#f5f5f5;padding:8px 6px;border-radius:4px;text-align:center;}'
-    + '.step-num{font-family:"Syne",sans-serif;font-size:18px;font-weight:900;color:#c9a800;}'
-    + '.step-lbl{font-size:9px;margin-top:2px;line-height:1.4;color:#555;}'
-    + '.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}'
-    + '.prog-card{border-top:3px solid #FFE600;padding:8px 10px;background:#fafafa;}'
-    + '.prog-title{font-family:"Syne",sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:3px;}'
-    + '.prog-body{font-size:10px;color:#666;line-height:1.6;}'
-    + '.ul-guide{margin:0;padding:0;list-style:none;}'
-    + '.ul-guide li{font-size:11px;padding:4px 0;border-bottom:1px solid #f0f0f0;line-height:1.6;}'
-    + '.ul-guide li:last-child{border-bottom:none;}'
-    + '.ul-guide li::before{content:"▶ ";color:#c9a800;font-size:8px;}'
+    + '.gacc-info{background:#fffbf0!important;border-left:3px solid #FFE600;padding:8px 12px;border-radius:0 4px 4px 0;margin-top:8px;font-size:10.5px;line-height:1.6;color:#333!important;}'
+    + '.gacc-warn{background:#fff0f0!important;border-left:3px solid #ef4444;padding:8px 12px;border-radius:0 4px 4px 0;margin-top:8px;font-size:10.5px;line-height:1.6;color:#333!important;}'
+    + '.gacc-tip{background:#f0fff6!important;border-left:3px solid #00a85a;padding:8px 12px;border-radius:0 4px 4px 0;margin-top:8px;font-size:10.5px;line-height:1.6;color:#333!important;}'
+    + '.gacc-step-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0;}'
+    + '.gacc-step-card{background:#f5f5f5;border:1px solid #e5e5e5;padding:8px 6px;border-radius:4px;text-align:center;}'
+    + '.gacc-step-num{font-family:"Syne",sans-serif;font-size:18px;font-weight:900;color:#c9a800;line-height:1;}'
+    + '.gacc-step-lbl{font-size:9px;margin-top:2px;line-height:1.4;color:#555;}'
+    + '.gacc-prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}'
+    + '.gacc-prog-card{border-top:3px solid #FFE600;padding:8px 10px;background:#fafafa;border-radius:0 0 4px 4px;}'
+    + '.gacc-prog-title{font-family:"Syne",sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:3px;color:#1a1a1a;}'
+    + '.gacc-prog-body{font-size:10px;color:#555;line-height:1.6;}'
+    + '.gacc-tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}'
+    + '.gacc-tier-card{padding:8px 6px;border-radius:4px;text-align:center;}'
+    + '.gacc-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}'
+    + '.gacc-kpi-card{background:#f8f8f8;border:1px solid #e5e5e5;border-radius:6px;padding:10px 12px;}'
+    + '.gacc-kpi-name{font-family:"Syne",sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;color:#c9a800;margin-bottom:4px;}'
+    + '.gacc-kpi-desc{font-size:10px;color:#555;line-height:1.6;}'
+    + '.gacc-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}'
+    + '.gacc-source-box{border-radius:4px;overflow:hidden;border:1px solid #e5e5e5;}'
+    + '.gacc-source-hdr{background:#FFE600;padding:6px 10px;font-family:"Syne",sans-serif;font-size:10px;font-weight:700;color:#000;text-transform:uppercase;}'
+    + '.gacc-source-row{display:flex;border-bottom:1px solid #f0f0f0;}'
+    + '.gacc-source-row:last-child{border-bottom:none;}'
+    + '.gacc-source-num{font-family:"Syne",sans-serif;font-size:14px;font-weight:900;color:#c9a800;padding:5px 8px;flex-shrink:0;width:30px;text-align:center;}'
+    + '.gacc-source-txt{font-size:10px;color:#333;padding:5px 8px 5px 0;line-height:1.4;border-left:1px solid #f0f0f0;}'
+    + '.gacc-formula{background:#f0f8f0;border:1px solid #cce5cc;border-radius:4px;padding:10px 14px;font-family:"DM Mono",monospace;font-size:10px;color:#1a5c1a;margin-top:10px;line-height:1.7;}'
+    + '.gacc-ul{margin:0;padding:0;list-style:none;}'
+    + '.gacc-ul li{font-size:11px;padding:5px 0;border-bottom:1px solid #f0f0f0;line-height:1.6;display:flex;gap:8px;color:#333;}'
+    + '.gacc-ul li:last-child{border-bottom:none;}'
+    + '.gacc-ul li::before{content:"\\25BA";color:#c9a800;font-size:8px;flex-shrink:0;margin-top:3px;}'
+    + '.gacc-inline-code{font-family:"DM Mono",monospace;font-size:11px;font-weight:700;color:#c9a800;background:#f5f5f5;padding:1px 6px;border-radius:3px;}'
+    + '.gacc-tag-valid{font-size:10px;color:#00a85a;display:block;margin-top:4px;}'
+    + '.gacc-tag-invalid{font-size:10px;color:#ef4444;display:block;margin-top:2px;}'
+    + '.gacc-badge{display:inline-block;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;text-transform:uppercase;}'
+    + 'strong{color:#1a1a1a;}'
+    + 'code{background:#f5f5f5;padding:1px 5px;border-radius:2px;font-family:"DM Mono",monospace;font-size:10px;}'
+    + '.guide-acc-body{display:block!important;}'
+    + '.guide-acc-chevron,.guide-acc-hdr{display:none!important;}'
+    + 'input[type=range],input[type=file],input[type=text]{display:none!important;}'
     + '.footer{margin-top:24px;padding-top:8px;border-top:1px solid #eee;font-size:9px;color:#aaa;display:flex;justify-content:space-between;}'
-    + '@media print{body{padding:16px 20px;}.no-print{display:none!important;}}'
+    + '@media print{body{padding:16px 20px;}.no-print{display:none!important;}.g-section{page-break-inside:avoid;}}'
     + '</style></head><body>'
-    + '<h1>JD Sports SEA &mdash; Fulfilment Hub</h1>'
-    + '<div class="subtitle">HOW TO USE THIS DASHBOARD &nbsp;&middot;&nbsp; SHIP FROM STORE &amp; CLICK &amp; COLLECT &nbsp;&middot;&nbsp; MY &middot; SG &middot; TH</div>'
+    + '<h1>JD Sports SEA \u2014 Fulfilment Hub</h1>'
+    + '<div class="subtitle">HOW TO USE THIS DASHBOARD &nbsp;&middot;&nbsp; SFS &amp; C&amp;C &nbsp;&middot;&nbsp; MY &middot; SG &middot; TH</div>'
     + '<div class="yellow-rule"></div>'
-
-    + _guideSection('🏪','What is this?',
-        '<p style="margin-bottom:8px">The <strong>JD Sports SEA Fulfilment Hub</strong> is a weekly performance dashboard for tracking how well stores across Malaysia, Singapore and Thailand are fulfilling customer orders through two programmes.</p>'
-        +'<div class="prog-grid"><div class="prog-card"><div class="prog-title">SFS &mdash; Ship From Store</div><div class="prog-body">Store staff pick and ship online orders directly from the shop floor. The hub tracks how fast, reliably and frequently each store fulfils these orders each week.</div></div>'
-        +'<div class="prog-card"><div class="prog-title">C&amp;C &mdash; Click &amp; Collect</div><div class="prog-body">Customers order online and collect in store. The hub tracks bagging time, volume and missed revenue due to unclaimed orders.</div></div></div>'
-        +'<div class="info-box">All data is stored in a live cloud database (Supabase) — uploads are visible to all users immediately.</div>')
-
-    + _guideSection('👥','Who is it for?',
-        '<ul class="ul-guide">'
-        +'<li><strong>Ecommerce &amp; Operations Managers</strong> — monitor network performance, identify underperforming stores, track weekly trends across all markets</li>'
-        +'<li><strong>Country Leads (MY / SG / TH)</strong> — view their market in isolation, compare week-on-week or across a multi-week period</li>'
-        +'<li><strong>Admins</strong> — upload weekly CSV data, adjust scoring configs, delete incorrect weeks from the database</li>'
-        +'</ul>')
-
-    + _guideSection('🔐','Login',
-        '<p style="margin-bottom:8px">When you open the hub a login screen is shown before any data is visible. You need a <strong>Supabase email and password</strong> — contact your admin to be provisioned.</p>'
-        +'<div class="info-box"><strong>Supabase login:</strong> your personal email + password to access the dashboard.<br>'
-        +'<strong>Admin password:</strong> a separate built-in password (<code style="background:#f5f5f5;padding:1px 5px;border-radius:2px;font-weight:700">JDsportsSEA!</code>) required to unlock sliders, save configs and delete data. Not your Supabase login.</div>')
-
-    + _guideSection('🗂️','Navigating the dashboard',
-        '<table><thead><tr><th>Level</th><th>What it does</th></tr></thead><tbody>'
-        +'<tr><td>Country tabs</td><td>Select Malaysia, Singapore or Thailand at the top of the page</td></tr>'
-        +'<tr><td>Programme tabs</td><td>Switch between SFS and C&amp;C within each country panel</td></tr>'
-        +'<tr><td>View tabs</td><td>Stores · Health · Movers · Alerts · Overall</td></tr>'
-        +'<tr><td>Filters</td><td>Quarter → Month → Week dropdowns narrow to the exact period you want</td></tr>'
-        +'<tr><td>Single / Period</td><td>Toggle between viewing one week or comparing a range of weeks</td></tr>'
-        +'</tbody></table>')
-
-    + _guideSection('📤','Uploading weekly data',
-        '<div class="step-grid">'
-        +'<div class="step-card"><div class="step-num">1</div><div class="step-lbl">Type week label e.g. W12 2026</div></div>'
-        +'<div class="step-card"><div class="step-num">2</div><div class="step-lbl">Wait for green ✓ to appear</div></div>'
-        +'<div class="step-card"><div class="step-num">3</div><div class="step-lbl">Click Upload SFS or C&amp;C CSV</div></div>'
-        +'<div class="step-card"><div class="step-num">4</div><div class="step-lbl">Select your CSV file</div></div>'
-        +'<div class="step-card"><div class="step-num">5</div><div class="step-lbl">Wait for Saved ✓ confirmation</div></div>'
-        +'</div>'
-        +'<div class="info-box"><strong>Week label format:</strong> W[1–52] followed by a 4-digit year. Valid: W1 2026, W12 2026, W52 2026</div>'
-        +'<div class="warn-box">Data from <strong>Onestock</strong>. SFS: BI Suite → Competitive Analysis → "Orders to claim vs claimed orders". C&amp;C: BI Suite → Performance: Click and Collect → Bag Performance. Export as CSV for the correct date range.</div>')
-
-    + _guideSection('📊','What each view tab shows',
-        '<table><thead><tr><th>Tab</th><th>What you see</th></tr></thead><tbody>'
-        +'<tr><td>Stores</td><td>Full ranked table — rank, score, tier, claimed %, speed, orders/day. Click any row for full history and notes.</td></tr>'
-        +'<tr><td>Health</td><td>Network-level charts showing score distribution and trends across all loaded weeks.</td></tr>'
-        +'<tr><td>Movers</td><td>Top 5 most improved and most declined stores week-on-week.</td></tr>'
-        +'<tr><td>Alerts</td><td>Auto-generated flags for meaningful score drops. Severity: High (red) or Medium (amber).</td></tr>'
-        +'<tr><td>Overall</td><td>All-time average across every loaded week — identifies consistently strong or weak stores.</td></tr>'
-        +'</tbody></table>')
-
-    + _guideSection('📦','SFS — KPIs explained',
-        '<table><thead><tr><th>KPI</th><th>What it measures</th><th>Why it matters</th></tr></thead><tbody>'
-        +'<tr><td>Claimed %</td><td>% of SFS orders claimed within the window</td><td>Most important — directly impacts whether the customer gets their order</td></tr>'
-        +'<tr><td>Reliability</td><td>% of claimed orders fulfilled without cancellation</td><td>High reliability means the store follows through on what it claims</td></tr>'
-        +'<tr><td>Avg TTC</td><td>Average Time To Claim in hours</td><td>Faster is better — customers expect quick despatch</td></tr>'
-        +'<tr><td>Orders / Day</td><td>Avg orders processed per trading day</td><td>Measures volume throughput and network capacity contribution</td></tr>'
-        +'</tbody></table>')
-
-    + _guideSection('🛍️','C&C — KPIs explained',
-        '<table><thead><tr><th>KPI</th><th>What it measures</th><th>Why it matters</th></tr></thead><tbody>'
-        +'<tr><td>Claimed</td><td>Orders accepted and begun by store staff</td><td>Starting point — unclaimed orders cannot be collected</td></tr>'
-        +'<tr><td>Pct Bagged</td><td>% of orders physically bagged and ready</td><td>Key operational output — high bagged % means end-to-end execution</td></tr>'
-        +'<tr><td>TTB</td><td>Avg hours from order arrival to bagged</td><td>Customers expect quick readiness — long TTB leads to poor experience</td></tr>'
-        +'<tr><td>Missed Revenue</td><td>Revenue from unclaimed or unavailable orders</td><td>Directly quantifies the financial impact of C&amp;C failures</td></tr>'
-        +'</tbody></table>')
-
-    + _guideSection('🏆','Scores & Tiers',
-        '<p style="margin-bottom:8px">Each store receives a composite score out of 100 based on weighted KPI performance relative to the network.</p>'
-        +'<div class="tier-grid">'
-        +'<div class="tier-card" style="background:#f0fff6;border-top:3px solid #00a85a"><div style="font-family:Syne,sans-serif;font-size:22px;font-weight:900;color:#00a85a">A</div><div style="font-size:8px;color:#00a85a;font-weight:700">TOP TIER</div><div style="font-size:9px;color:#555;margin-top:3px">Network leaders</div></div>'
-        +'<div class="tier-card" style="background:#f0f4ff;border-top:3px solid #3b82f6"><div style="font-family:Syne,sans-serif;font-size:22px;font-weight:900;color:#3b82f6">B</div><div style="font-size:8px;color:#3b82f6;font-weight:700">SOLID</div><div style="font-size:9px;color:#555;margin-top:3px">Performing well</div></div>'
-        +'<div class="tier-card" style="background:#fffbf0;border-top:3px solid #f59e0b"><div style="font-family:Syne,sans-serif;font-size:22px;font-weight:900;color:#f59e0b">C</div><div style="font-size:8px;color:#f59e0b;font-weight:700">DEVELOPING</div><div style="font-size:9px;color:#555;margin-top:3px">Needs support</div></div>'
-        +'<div class="tier-card" style="background:#fff0f0;border-top:3px solid #ef4444"><div style="font-family:Syne,sans-serif;font-size:22px;font-weight:900;color:#ef4444">D</div><div style="font-size:8px;color:#ef4444;font-weight:700">NEEDS ATTENTION</div><div style="font-size:9px;color:#555;margin-top:3px">Urgent action needed</div></div>'
-        +'</div>'
-        +'<div class="info-box" style="margin-top:10px"><strong>Admin password: </strong><code style="background:#f5f5f5;padding:1px 6px;border-radius:2px;font-weight:700">JDsportsSEA!</code> — required to unlock scoring sliders, save configs and delete weeks.</div>')
-
-    + _guideSection('🗑️','Deleting a week',
-        '<ul class="ul-guide">'
-        +'<li>Select the incorrect week from the <strong>week dropdown</strong></li>'
-        +'<li>Click the <strong>🗑 Delete week</strong> button next to the dropdown</li>'
-        +'<li>Enter the <strong>admin password</strong> when prompted</li>'
-        +'<li>Confirm the deletion dialog</li>'
-        +'<li>In period mode you can select multiple weeks — each requires its own confirmation</li>'
-        +'</ul>'
-        +'<div class="warn-box">⚠ Deletion is permanent and cannot be undone. The original CSV must be re-uploaded to restore the data.</div>')
-
+    + sectionsHtml
     + '<div class="footer">'
     + '<span>JD Sports SEA Fulfilment Hub &nbsp;&middot;&nbsp; Internal Use Only &nbsp;&middot;&nbsp; Generated ' + dateStr + '</span>'
     + '<span>For access, contact your ecommerce operations manager</span>'
     + '</div>'
     + '<div class="no-print" style="margin-top:24px;text-align:center">'
-    + '<button onclick="window.print()" style="background:#FFE600;border:none;padding:10px 28px;font-weight:700;font-size:13px;cursor:pointer;letter-spacing:1px;font-family:Arial,sans-serif">Print / Save as PDF</button>'
+    + '<button onclick="window.print()" style="background:#FFE600;border:none;padding:10px 28px;font-weight:700;font-size:13px;cursor:pointer;letter-spacing:1px;font-family:Arial,sans-serif">&#128462; Print / Save as PDF</button>'
     + '<button onclick="window.close()" style="background:#eee;border:none;padding:10px 24px;font-weight:700;font-size:13px;cursor:pointer;margin-left:8px;font-family:Arial,sans-serif">Close</button>'
     + '</div>'
     + '</body></html>';
-
-  var win = window.open('', '_blank', 'width=900,height=750');
+  var win = window.open('', '_blank', 'width=960,height=800');
   if (!win) { alert('Please allow popups to use the PDF export.'); return; }
   win.document.write(html);
   win.document.close();
@@ -4188,6 +4152,8 @@ function cncPopulateWeekDropdown(c) {
 
 // Called when user picks a week from the SFS week dropdown
 function sfsSelectWeekFromDropdown(c, week) {
+  var _sdb = document.getElementById('sfs-delete-week-btn-' + c);
+  if (_sdb) _sdb.style.display = week ? 'inline-flex' : 'none';
   if (!week) return;
   // Reset quarter/month dropdowns to blank
   var qSel = document.getElementById('sfs-quarter-select-' + c);
@@ -4203,6 +4169,8 @@ function sfsSelectWeekFromDropdown(c, week) {
 
 // Called when user picks a week from the C&C week dropdown
 function cncSelectWeekFromDropdown(c, week) {
+  var _cdb = document.getElementById('cnc-delete-week-btn-' + c);
+  if (_cdb) _cdb.style.display = week ? 'inline-flex' : 'none';
   if (!week) return;
   var qSel = document.getElementById('cnc-quarter-select-' + c);
   var mSel = document.getElementById('cnc-month-select-' + c);
